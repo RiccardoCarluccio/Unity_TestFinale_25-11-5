@@ -5,7 +5,7 @@ const pool = mysql.createPool({
     host: 'localhost',
     user: 'root',        // il tuo utente MySQL
     password: 'root', // la tua password MySQL
-    database: 'finalproject_db'   // il database che userai
+    database: 'quizgame_db'   // il database che userai
 });
 
 // Trasforma in promise per usare async/await
