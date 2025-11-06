@@ -8,6 +8,18 @@ EditorBuildSettings:
   - enabled: 1
     path: Assets/Scenes/Scene_MainMenu.unity
     guid: 99c9720ab356a0642a771bea13969a05
+  - enabled: 1
+    path: Assets/Scenes/Scene_Crud.unity
+    guid: 3f7f7b6dccf9da6439d83b09980403f2
+  - enabled: 1
+    path: Assets/Scenes/Scene_Surf.unity
+    guid: 190ba65e2e20dd546ae3e10f6ff65d46
+  - enabled: 1
+    path: Assets/Scenes/Scene_Videogames.unity
+    guid: 7c18636eab73e0241b0eb7eb50b9a2bf
+  - enabled: 1
+    path: Assets/Scenes/Scene_Wrong.unity
+    guid: d5c50ff2ec5bc5745844042a046c4ae7
   m_configObjects:
     com.unity.input.settings.actions: {fileID: -944628639613478452, guid: 052faaac586de48259a63d0c4782560b, type: 3}
   m_UseUCBPForAssetBundles: 0
