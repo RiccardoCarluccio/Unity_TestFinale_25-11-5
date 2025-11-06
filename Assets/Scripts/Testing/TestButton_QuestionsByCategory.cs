@@ -2,7 +2,7 @@ using TMPro;
 using UnityEngine;
 using UnityEngine.UI;
 
-public class Questions_by_category : MonoBehaviour
+public class TestButton_QuestionsByCategory : MonoBehaviour
 {
     [SerializeField] private Button _button;
     [SerializeField] private Manager_CRUD _manager;
