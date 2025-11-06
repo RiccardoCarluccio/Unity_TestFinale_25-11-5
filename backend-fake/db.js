@@ -4,7 +4,7 @@ const mysql = require('mysql2');
 const pool = mysql.createPool({
     host: 'localhost',
     user: 'root',        // il tuo utente MySQL
-    password: 'TwIcEoNcE01!', // la tua password MySQL
+    password: 'root', // la tua password MySQL
     database: 'quizgame_db'   // il database che userai
 });
 

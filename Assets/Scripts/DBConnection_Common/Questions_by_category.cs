@@ -6,7 +6,6 @@ public class Questions_by_category : MonoBehaviour
 {
     [SerializeField] private Button _button;
     [SerializeField] private Manager_CRUD _manager;
-
     [SerializeField] private TMP_InputField _category;
 
     private void OnEnable()
@@ -21,6 +20,6 @@ public class Questions_by_category : MonoBehaviour
 
     private void OnLoadQuizItemsClicked()
     {
-        _manager.LoadCategoryQuizItems(int.Parse(_category.text));
+        _manager.LoadQuizItemsByCategory(int.Parse(_category.text));
     }
 }

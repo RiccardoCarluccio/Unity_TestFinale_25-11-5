@@ -1,11 +1,6 @@
 using System.Collections.Generic;
 using UnityEngine;
 
-public class QuizItemUI
-{
-
-}
-
 public class Manager_UI : MonoBehaviour
 {
     private static Manager_UI _instance;
