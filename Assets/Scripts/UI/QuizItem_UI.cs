@@ -15,6 +15,6 @@ public class QuizItem_UI : MonoBehaviour
             idText.text = $"ID: {quizItem.category_id}";
 
         if (questionText!= null)
-            questionText.text = $"Titolo: {quizItem.question}";
+            questionText.text = $"Domanda: {quizItem.question_text}";
     }
 }

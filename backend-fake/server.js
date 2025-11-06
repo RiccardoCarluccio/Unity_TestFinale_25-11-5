@@ -18,7 +18,12 @@ let fallbackTasks = [
     { id: 3, title: 'Connessione Unity', description: 'Test della connessione da Unity', completed: false }
 ];
 
-app.get('/api/quiz_items', async (req, res) => {
+// Test endpoint for connection
+app.get('/api/quiz_items/test', (req, res) => {
+    res.json({ message: 'Server is running!', timestamp: new Date().toISOString() });
+});
+
+app.get('/api/quiz_items/:category_id', async (req, res) => {
     try {
         const [quizItems] = await db.query('SELECT * FROM quiz_items WHERE category_id = ?', [req.params.category_id]);
         res.json(quizItems);
