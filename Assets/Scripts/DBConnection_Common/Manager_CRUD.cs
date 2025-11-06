@@ -8,24 +8,24 @@ using UnityEngine.Networking;
 [Serializable]
 public class QuizItem
 {
-    public int quizItem_id;
+    public int quiz_item_id;
     public int category_id;
-    public string question;
-    public string answer1;
-    public string answer2;
-    public string answer3;
-    public int correctAnswer;
+    public string question_text;
+    public string answer_1;
+    public string answer_2;
+    public string answer_3;
+    public int correct_answer;
     public string explanation;
 
     public QuizItem(int id, int category, string question, string answer1, string answer2, string answer3, int correctAnswer, string explanation)
     {
-        this.quizItem_id = id;
+        this.quiz_item_id = id;
         this.category_id = category;
-        this.question = question;
-        this.answer1 = answer1;
-        this.answer2 = answer2;
-        this.answer3 = answer3;
-        this.correctAnswer = correctAnswer;
+        this.question_text = question;
+        this.answer_1 = answer1;
+        this.answer_2 = answer2;
+        this.answer_3 = answer3;
+        this.correct_answer = correctAnswer;
         this.explanation = explanation;
     }
 }
@@ -59,7 +59,7 @@ public class QuizItemListWrapper
 public class Manager_CRUD : MonoBehaviour
 {
     [Header("Server Configuration")]
-    public string baseUrl = "http://localhost:8080/api/quizItems";
+    public string baseUrl = "http://localhost:8080/api/quiz_items";
 
     [Header("Events")]
     public UnityAction<List<QuizItem>> OnQuizItemsLoaded;
@@ -82,9 +82,9 @@ public class Manager_CRUD : MonoBehaviour
     /// <summary>
     /// Carica tutti i quiz item specifici di una categoria per ID
     /// </summary>
-    public void LoadCategoryQuizItems(int categoryId)
+    public void LoadQuizItemsByCategory(int categoryId)
     {
-        StartCoroutine(GetCategoryQuizItemsCoroutine(categoryId));
+        StartCoroutine(GetQuizItemsByCategoryCoroutine(categoryId));
     }
 
     /// <summary>
@@ -105,7 +105,7 @@ public class Manager_CRUD : MonoBehaviour
         if (enableDebugLogs)
             Debug.Log("Testing connection to server...");
 
-        using (UnityWebRequest request = UnityWebRequest.Get(baseUrl))
+        using (UnityWebRequest request = UnityWebRequest.Get($"{baseUrl}/test"))
         {
             yield return request.SendWebRequest();
 
@@ -124,7 +124,7 @@ public class Manager_CRUD : MonoBehaviour
         }
     }
 
-    private IEnumerator GetCategoryQuizItemsCoroutine(int categoryId)
+    private IEnumerator GetQuizItemsByCategoryCoroutine(int categoryId)
     {
         if (enableDebugLogs)
             Debug.Log($"Loading quiz items for category id: {categoryId}...");
@@ -133,7 +133,7 @@ public class Manager_CRUD : MonoBehaviour
         {
             request.SetRequestHeader("Content-Type", "application/json");
             yield return request.SendWebRequest();
-
+            print("entro in categoryquizitemscouroutine");
             if (request.result == UnityWebRequest.Result.Success)
             {
                 try
@@ -143,7 +143,7 @@ public class Manager_CRUD : MonoBehaviour
                     if (enableDebugLogs)
                         Debug.Log($"Raw JSON response: {jsonResponse}");
 
-                    // Controlla se la risposta è vuota o null
+                    // Controlla se la risposta ï¿½ vuota o null
                     if (string.IsNullOrEmpty(jsonResponse) || jsonResponse.Trim() == "null")
                     {
                         if (enableDebugLogs)
@@ -226,5 +226,10 @@ public class Manager_CRUD : MonoBehaviour
         OnError?.Invoke(errorMessage);
     }
 
-    #endregion
+   internal void LoadCategoryQuizItems()
+   {
+      throw new NotImplementedException();
+   }
+
+   #endregion
 }
