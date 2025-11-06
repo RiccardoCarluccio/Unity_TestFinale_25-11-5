@@ -14,7 +14,6 @@ public class SceneLoader : MonoBehaviour
     [SerializeField] private Button _crudButton;
     [SerializeField] private Button _surfButton;
     [SerializeField] private Button _gamesButton;
-    [SerializeField] private Button _toMainMenuButton;
 
     [Header("Debug")]
     public bool enableDebugLogs = true;
@@ -32,7 +31,6 @@ public class SceneLoader : MonoBehaviour
         _crudButton.onClick.AddListener(() => LoadChosenScene(ChosenScene.Scene_Crud));
         _surfButton.onClick.AddListener(() => LoadChosenScene(ChosenScene.Scene_Surf));
         _gamesButton.onClick.AddListener(() => LoadChosenScene(ChosenScene.Scene_Videogames));
-        _toMainMenuButton.onClick.AddListener(() => LoadChosenScene(ChosenScene.Scene_MainMenu));
     }
 
     private void OnDisable()
@@ -40,7 +38,6 @@ public class SceneLoader : MonoBehaviour
         _crudButton.onClick.RemoveAllListeners();
         _surfButton.onClick.RemoveAllListeners();
         _gamesButton.onClick.RemoveAllListeners();
-        _toMainMenuButton.onClick.RemoveAllListeners();
     }
 
     private void LoadChosenScene(Enum scene)
@@ -56,6 +53,5 @@ public class SceneLoader : MonoBehaviour
         Scene_Crud,
         Scene_Surf,
         Scene_Videogames,
-        Scene_MainMenu
     }
 }
