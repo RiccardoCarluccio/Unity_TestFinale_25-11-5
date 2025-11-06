@@ -59,7 +59,7 @@ public class QuizItemListWrapper
 public class Manager_CRUD : MonoBehaviour
 {
     [Header("Server Configuration")]
-    public string baseUrl = "http://localhost:8080/api/quizItems";
+    public string baseUrl = "http://localhost:8080/api/quiz_items";
 
     [Header("Events")]
     public UnityAction<List<QuizItem>> OnQuizItemsLoaded;
@@ -133,7 +133,7 @@ public class Manager_CRUD : MonoBehaviour
         {
             request.SetRequestHeader("Content-Type", "application/json");
             yield return request.SendWebRequest();
-
+            print("entro in categoryquizitemscouroutine");
             if (request.result == UnityWebRequest.Result.Success)
             {
                 try
@@ -143,7 +143,7 @@ public class Manager_CRUD : MonoBehaviour
                     if (enableDebugLogs)
                         Debug.Log($"Raw JSON response: {jsonResponse}");
 
-                    // Controlla se la risposta è vuota o null
+                    // Controlla se la risposta ï¿½ vuota o null
                     if (string.IsNullOrEmpty(jsonResponse) || jsonResponse.Trim() == "null")
                     {
                         if (enableDebugLogs)
@@ -226,5 +226,10 @@ public class Manager_CRUD : MonoBehaviour
         OnError?.Invoke(errorMessage);
     }
 
-    #endregion
+   internal void LoadCategoryQuizItems()
+   {
+      throw new NotImplementedException();
+   }
+
+   #endregion
 }

@@ -11,12 +11,23 @@ app.use(cors({
 }));
 app.use(bodyParser.json());
 
-// Fallback tasks in memory (quando MySQL non è disponibile)
+// Fallback tasks in memory (quando MySQL non ï¿½ disponibile)
 let fallbackTasks = [
     { id: 1, title: 'Task di Test 1', description: 'Prima task di esempio senza MySQL', completed: false },
     { id: 2, title: 'Task di Test 2', description: 'Seconda task di esempio', completed: true },
     { id: 3, title: 'Connessione Unity', description: 'Test della connessione da Unity', completed: false }
 ];
+
+app.get('/api/quiz_items', async (req, res) => {
+    try {
+        const [quizItems] = await db.query('SELECT * FROM quiz_items WHERE category_id = ?', [req.params.category_id]);
+        res.json(quizItems);
+    } catch (error) {
+        console.error('Error fetching tasks:', error);
+        res.status(500).json({ error: 'Error fetching tasks' });
+        res.json(fallbackTasks);
+    }
+});
 
 app.listen(port, () => {
     console.log(`Server Node.js in ascolto su http://localhost:${port}`);
