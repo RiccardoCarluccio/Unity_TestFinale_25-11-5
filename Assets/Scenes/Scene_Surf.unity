@@ -2071,6 +2071,7 @@ GameObject:
   - component: {fileID: 1932226733}
   - component: {fileID: 1932226732}
   - component: {fileID: 1932226731}
+  - component: {fileID: 1932226737}
   m_Layer: 5
   m_Name: ButtonReturn
   m_TagString: Untagged
@@ -2236,6 +2237,19 @@ CanvasRenderer:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1932226729}
   m_CullTransparentMesh: 1
+--- !u!114 &1932226737
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1932226729}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 25f04bc9d970fa544be7121f406113ec, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::ToMainMenu
+  _toMainMenuButton: {fileID: 1932226734}
 --- !u!1 &2122403425
 GameObject:
   m_ObjectHideFlags: 0

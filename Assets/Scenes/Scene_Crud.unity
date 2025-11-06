@@ -405,6 +405,7 @@ GameObject:
   - component: {fileID: 114721660}
   - component: {fileID: 114721659}
   - component: {fileID: 114721664}
+  - component: {fileID: 114721665}
   m_Layer: 5
   m_Name: ButtonReturn
   m_TagString: Untagged
@@ -570,6 +571,19 @@ Animator:
   m_AllowConstantClipSamplingOptimization: 1
   m_KeepAnimatorStateOnDisable: 0
   m_WriteDefaultValuesOnDisable: 0
+--- !u!114 &114721665
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 114721657}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 25f04bc9d970fa544be7121f406113ec, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::ToMainMenu
+  _toMainMenuButton: {fileID: 114721661}
 --- !u!1 &171893272
 GameObject:
   m_ObjectHideFlags: 0
