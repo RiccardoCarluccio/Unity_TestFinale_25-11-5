@@ -11,6 +11,8 @@ public class SceneLoader : MonoBehaviour
 
     public int category_id;
 
+    
+
     [SerializeField] private Button _crudButton;
     [SerializeField] private Button _surfButton;
     [SerializeField] private Button _gamesButton;
