@@ -535,7 +535,7 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0, y: 0}
   m_AnchorMax: {x: 1, y: 1}
-  m_AnchoredPosition: {x: 4.7216187, y: 0.107543945}
+  m_AnchoredPosition: {x: 4.7216797, y: 0.107543945}
   m_SizeDelta: {x: 0.38232422, y: 0.21508789}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!1 &114721657
@@ -3902,6 +3902,10 @@ MonoBehaviour:
   _answer3Button: {fileID: 171893274}
   _questionText: {fileID: 594576503}
   _questionCounterText: {fileID: 1740475324}
+  _explanationText: {fileID: 737089965}
+  _panelManager: {fileID: 907424188}
+  finestraWrong: {fileID: 92887719}
+  questionsPanel: {fileID: 990684722}
   enableDebugLogs: 1
 --- !u!4 &2007325266
 Transform:
