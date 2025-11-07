@@ -9,7 +9,7 @@ public class Manager_UI : MonoBehaviour
 
     [SerializeField] private Transform _contentParent;
     [SerializeField] private GameObject _quizPrefab;
-    [SerializeField] private Manager_CRUD _quizItemManager;
+    [SerializeField] private Manager_CRUD _managerCrud;
 
     private void Awake()
     {
@@ -21,15 +21,15 @@ public class Manager_UI : MonoBehaviour
 
     private void OnEnable()
     {
-        _quizItemManager.OnQuizItemsLoaded += OnTasksLoaded;
+        _managerCrud.OnQuizItemsLoaded += OnQuizItemsLoaded;
     }
 
     private void OnDisable()
     {
-        _quizItemManager.OnQuizItemsLoaded -= OnTasksLoaded;
+        _managerCrud.OnQuizItemsLoaded -= OnQuizItemsLoaded;
     }
 
-    private void OnTasksLoaded(List<QuizItem> quizItems)
+    private void OnQuizItemsLoaded(List<QuizItem> quizItems)
     {
         Debug.Log($"UI: ricevute {quizItems.Count} quiz items dal server");
 
