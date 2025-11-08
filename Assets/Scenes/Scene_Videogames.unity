@@ -580,7 +580,7 @@ MonoBehaviour:
   m_OnClick:
     m_PersistentCalls:
       m_Calls:
-      - m_Target: {fileID: 0}
+      - m_Target: {fileID: 1771018151}
         m_TargetAssemblyTypeName: PanelManager, Assembly-CSharp
         m_MethodName: ShowQuestionPanel
         m_Mode: 1
@@ -1917,7 +1917,7 @@ RectTransform:
   - {fileID: 1134518225}
   - {fileID: 81267252}
   - {fileID: 171893273}
-  - {fileID: 1691274220}
+  - {fileID: 1069929057}
   m_Father: {fileID: 1123764882}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0, y: 0}
@@ -2152,7 +2152,7 @@ RectTransform:
   m_ConstrainProportionsScale: 0
   m_Children:
   - {fileID: 206284781}
-  m_Father: {fileID: 1123764882}
+  m_Father: {fileID: 990684723}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0.5, y: 0.5}
   m_AnchorMax: {x: 0.5, y: 0.5}
@@ -2371,8 +2371,6 @@ MonoBehaviour:
   _questionCounterText: {fileID: 1740475324}
   _explanationText: {fileID: 1565905451}
   _panelManager: {fileID: 1771018151}
-  finestraWrong: {fileID: 1691274219}
-  questionsPanel: {fileID: 990684722}
   enableDebugLogs: 1
 --- !u!4 &1076177277
 Transform:
@@ -2484,8 +2482,8 @@ RectTransform:
   m_ConstrainProportionsScale: 0
   m_Children:
   - {fileID: 990684723}
-  - {fileID: 1069929057}
   - {fileID: 2104424439}
+  - {fileID: 1691274220}
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0, y: 0}
@@ -3444,7 +3442,7 @@ RectTransform:
   - {fileID: 1956387704}
   - {fileID: 1565905450}
   - {fileID: 139866216}
-  m_Father: {fileID: 990684723}
+  m_Father: {fileID: 1123764882}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0, y: 0}
   m_AnchorMax: {x: 1, y: 1}

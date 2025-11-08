@@ -1304,7 +1304,7 @@ RectTransform:
   - {fileID: 1348805400}
   - {fileID: 474622865}
   - {fileID: 1957014094}
-  m_Father: {fileID: 990684723}
+  m_Father: {fileID: 1123764882}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0, y: 0}
   m_AnchorMax: {x: 1, y: 1}
@@ -1935,7 +1935,7 @@ RectTransform:
   - {fileID: 1134518225}
   - {fileID: 81267252}
   - {fileID: 171893273}
-  - {fileID: 564528075}
+  - {fileID: 1932226730}
   m_Father: {fileID: 1123764882}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0, y: 0}
@@ -1981,6 +1981,37 @@ CanvasRenderer:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 990684722}
   m_CullTransparentMesh: 1
+--- !u!1 &994260580
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 994260581}
+  m_Layer: 0
+  m_Name: -----UI-----
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 0
+--- !u!4 &994260581
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 994260580}
+  serializedVersion: 2
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 525.98425, y: 283.59323, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 0}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &1018692859
 GameObject:
   m_ObjectHideFlags: 0
@@ -2260,8 +2291,8 @@ RectTransform:
   m_ConstrainProportionsScale: 0
   m_Children:
   - {fileID: 990684723}
-  - {fileID: 1932226730}
   - {fileID: 1228331169}
+  - {fileID: 564528075}
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0, y: 0}
@@ -3066,8 +3097,6 @@ MonoBehaviour:
   _questionCounterText: {fileID: 1740475324}
   _explanationText: {fileID: 474622866}
   _panelManager: {fileID: 1557411510}
-  finestraWrong: {fileID: 564528074}
-  questionsPanel: {fileID: 990684722}
   enableDebugLogs: 1
 --- !u!4 &1516907384
 Transform:
@@ -3567,7 +3596,7 @@ RectTransform:
   m_ConstrainProportionsScale: 0
   m_Children:
   - {fileID: 651934031}
-  m_Father: {fileID: 1123764882}
+  m_Father: {fileID: 990684723}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0.5, y: 0.5}
   m_AnchorMax: {x: 0.5, y: 0.5}
@@ -3881,7 +3910,7 @@ MonoBehaviour:
   m_OnClick:
     m_PersistentCalls:
       m_Calls:
-      - m_Target: {fileID: 0}
+      - m_Target: {fileID: 1557411510}
         m_TargetAssemblyTypeName: PanelManager, Assembly-CSharp
         m_MethodName: ShowQuestionPanel
         m_Mode: 1
@@ -4215,7 +4244,7 @@ SceneRoots:
   - {fileID: 1617196573}
   - {fileID: 1516907384}
   - {fileID: 1557411511}
-  - {fileID: 1258503352}
+  - {fileID: 994260581}
   - {fileID: 1123764882}
   - {fileID: 348143872}
   - {fileID: 891949290}
