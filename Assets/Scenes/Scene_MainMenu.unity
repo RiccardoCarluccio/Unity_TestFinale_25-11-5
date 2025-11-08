@@ -1760,10 +1760,10 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 23a041daa0173244a94e83ef9e1e66e2, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::SoundManager
-  buttonClickSound: {fileID: 8300000, guid: ddbc9f5dc83fd454498d8f9ed6cda6cf, type: 3}
-  buttonHoverSound: {fileID: 8300000, guid: 5da1bfc2875f5fe48a8b2607d1f103ba, type: 3}
-  correctAnswerSound: {fileID: 8300000, guid: 6db4380c10035284a9057eafb06c2e74, type: 3}
-  wrongAnswerSound: {fileID: 8300000, guid: 0e9444b7ba03c0a4fafb402c91f29d6e, type: 3}
+  buttonClickSound: {fileID: 8300000, guid: b72990f02a5c25547bc656d30691d98f, type: 3}
+  buttonHoverSound: {fileID: 8300000, guid: d53bd56c36812664ca987a85ccb921aa, type: 3}
+  correctAnswerSound: {fileID: 8300000, guid: 88e19a06a6c0b8946ac19f274119ef1c, type: 3}
+  wrongAnswerSound: {fileID: 8300000, guid: 4ad62eb02b8205f4fbdb72efbb5988e8, type: 3}
 --- !u!82 &1229308128
 AudioSource:
   m_ObjectHideFlags: 0
@@ -3568,6 +3568,10 @@ PrefabInstance:
       propertyPath: m_Volume
       value: 0.1
       objectReference: {fileID: 0}
+    - target: {fileID: 7962158375728820111, guid: f3b297b45507d374a94c1cafcb3860cb, type: 3}
+      propertyPath: m_Resource
+      value: 
+      objectReference: {fileID: 8300000, guid: 3f2caa76d10eaf24283ea4b45429459b, type: 3}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
     m_AddedGameObjects: []
@@ -3583,9 +3587,9 @@ SceneRoots:
   - {fileID: 832575519}
   - {fileID: 2036482514}
   - {fileID: 1199675912}
+  - {fileID: 8093097854582853682}
+  - {fileID: 1229308129}
   - {fileID: 21911715}
   - {fileID: 282388296}
   - {fileID: 1444322067}
   - {fileID: 1851665722576870396}
-  - {fileID: 8093097854582853682}
-  - {fileID: 1229308129}

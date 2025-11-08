@@ -11,21 +11,19 @@ public class QuizItem
     public int quiz_item_id;
     public int category_id;
     public string question_text;
-    public string answer_1;             //change in 'correct_answer'
+    public string correct_answer;
     public string answer_2;
     public string answer_3;
-    public int correct_answer;          //delete
     public string explanation;
 
-    public QuizItem(int id, int category, string question, string answer1, string answer2, string answer3, int correctAnswer, string explanation)
+    public QuizItem(int id, int category, string question, string correctAnswer, string answer2, string answer3, string explanation)
     {
         this.quiz_item_id = id;
         this.category_id = category;
         this.question_text = question;
-        this.answer_1 = answer1;
+        this.correct_answer = correctAnswer;
         this.answer_2 = answer2;
         this.answer_3 = answer3;
-        this.correct_answer = correctAnswer;
         this.explanation = explanation;
     }
 }
