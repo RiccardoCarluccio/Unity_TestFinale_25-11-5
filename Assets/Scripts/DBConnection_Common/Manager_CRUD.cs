@@ -78,14 +78,6 @@ public class Manager_CRUD : MonoBehaviour
     #region Public Methods
 
     /// <summary>
-    /// Carica tutti i quiz item specifici di una categoria per ID
-    /// </summary>
-    public void LoadQuizItemsByCategory(int categoryId)
-    {
-        StartCoroutine(GetQuizItemsByCategoryCoroutine(categoryId));
-    }
-
-    /// <summary>
     /// Test di connessione manuale
     /// </summary>
     [ContextMenu("Test Connection")]
@@ -94,6 +86,14 @@ public class Manager_CRUD : MonoBehaviour
         StartCoroutine(TestConnection());
     }
 
+    /// <summary>
+    /// Carica tutti i quiz item specifici di una categoria per ID
+    /// </summary>
+    public void LoadQuizItemsByCategory(int categoryId)
+    {
+        StartCoroutine(GetQuizItemsByCategoryCoroutine(categoryId));
+    }
+    
     #endregion
 
     #region Coroutines
@@ -101,7 +101,7 @@ public class Manager_CRUD : MonoBehaviour
     private IEnumerator TestConnection()
     {
         if (enableDebugLogs)
-            Debug.Log("Testing connection to server...");
+            Debug.Log("Testing connection to server from Manager_CRUD");
 
         using (UnityWebRequest request = UnityWebRequest.Get($"{baseUrl}/test"))
         {
@@ -125,7 +125,7 @@ public class Manager_CRUD : MonoBehaviour
     private IEnumerator GetQuizItemsByCategoryCoroutine(int categoryId)
     {
         if (enableDebugLogs)
-            Debug.Log($"Loading quiz items for category id: {categoryId}...");
+            Debug.Log($"Loading quiz items for category id: {categoryId}");
 
         using (UnityWebRequest request = UnityWebRequest.Get($"{baseUrl}/{categoryId}"))
         {
@@ -189,45 +189,10 @@ public class Manager_CRUD : MonoBehaviour
             }
             else
             {
-                HandleRequestError(request, $"loading quiz items for category id: {categoryId}");
+                ConnectionHelper.HandleRequestError(request, $"loading quiz items for category id: {categoryId}", enableDebugLogs, OnError);
             }
         }
     }
 
     #endregion
-
-    #region Helper Methods
-
-    private void HandleRequestError(UnityWebRequest request, string operation)
-    {
-        string errorMessage = $"Error {request.responseCode}: {request.error}";
-
-        if (request.downloadHandler != null && !string.IsNullOrEmpty(request.downloadHandler.text))
-        {
-            try
-            {
-                QuizItemResponse errorResponse = JsonUtility.FromJson<QuizItemResponse>(request.downloadHandler.text);
-                if (!string.IsNullOrEmpty(errorResponse.error))
-                {
-                    errorMessage += $" - {errorResponse.error}";
-                }
-            }
-            catch
-            {
-                errorMessage += $" - Raw response: {request.downloadHandler.text}";
-            }
-        }
-
-        if (enableDebugLogs)
-            Debug.LogError($"{errorMessage}");
-
-        OnError?.Invoke(errorMessage);
-    }
-
-   internal void LoadCategoryQuizItems()
-   {
-      throw new NotImplementedException();
-   }
-
-   #endregion
 }
