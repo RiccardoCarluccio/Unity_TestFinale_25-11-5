@@ -3922,6 +3922,10 @@ MonoBehaviour:
   _answer3Button: {fileID: 171893274}
   _questionText: {fileID: 594576503}
   _questionCounterText: {fileID: 1740475324}
+  _explanationText: {fileID: 737089965}
+  _panelManager: {fileID: 907424188}
+  finestraWrong: {fileID: 92887719}
+  questionsPanel: {fileID: 990684722}
   enableDebugLogs: 1
 --- !u!4 &2007325266
 Transform:
