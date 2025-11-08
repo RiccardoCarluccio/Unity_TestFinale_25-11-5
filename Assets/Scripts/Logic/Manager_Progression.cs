@@ -1,5 +1,4 @@
 using System;
-using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
 using TMPro;
@@ -14,17 +13,14 @@ public class Manager_Progression : MonoBehaviour
 
     [SerializeField] private Manager_CRUD _managerCrud;
     [SerializeField] private Button _answer1Button, _answer2Button, _answer3Button;
-    [SerializeField] private TextMeshProUGUI _questionText, _questionCounterText, _explanationText;
-
-    [SerializeField] private PanelManager _panelManager;
-    [Header("UI")]
-    [SerializeField] private GameObject finestraWrong, questionsPanel;
+    [SerializeField] private TextMeshProUGUI _questionText;
+    [SerializeField] private TextMeshProUGUI _questionCounterText;
+    //SoundManager and PanelManager
+    //_questionPanel and _explanationPanel?
 
     private int _category_id;
     private List<QuizItem> _quizItems = new();
     private int _questionCounter = 1;
-    private QuizItem _currentQuizItem;
-    private bool isCorrect = true;
 
     [Header("Debug")]
     public bool enableDebugLogs = true;
@@ -52,8 +48,6 @@ public class Manager_Progression : MonoBehaviour
     /// </summary>
     private void Start()
     {
-        _panelManager.ShowQuestionPanel();
-
         var currentSceneName = SceneManager.GetActiveScene().name;
         if (Enum.TryParse(currentSceneName, out ChosenScene chosenScene))
         {
@@ -64,7 +58,7 @@ public class Manager_Progression : MonoBehaviour
 
             _managerCrud.LoadQuizItemsByCategory(_category_id);     //calls OnQuizItemsLoaded event
 
-            _questionCounterText.text = $"Domanda {_questionCounter}/ {_quizItems.Count}";
+            _questionCounterText.text = _questionCounter.ToString();
         }
         else
         {
@@ -86,7 +80,7 @@ public class Manager_Progression : MonoBehaviour
             return;
         }
 
-        _quizItems = quizItems;
+        _quizItems = quizItems;        
         if (enableDebugLogs)
             Debug.Log($"Loaded {_quizItems.Count} quiz items.");
 
@@ -109,9 +103,8 @@ public class Manager_Progression : MonoBehaviour
         QuizItem chosenQuizItem = _quizItems[quizItemIndex];
         _quizItems.RemoveAt(quizItemIndex);
         if (enableDebugLogs)
-            Debug.Log($"Quiz item randomly selected => ID: {chosenQuizItem.quiz_item_id}, Correct Answer: {chosenQuizItem.answer_1}");
+            Debug.Log($"Quiz item randomly selected => ID: {chosenQuizItem.quiz_item_id}, Correct Answer: {chosenQuizItem.correct_answer}, Answer #2: {chosenQuizItem.answer_2}");
 
-        _currentQuizItem = chosenQuizItem; // we get the current question to then get the explanation in case the answer is wrong
         _questionText.text = chosenQuizItem.question_text;
 
         AssingAnswersToButtons(chosenQuizItem);
@@ -149,7 +142,7 @@ public class Manager_Progression : MonoBehaviour
     {
         List<string> answers = new List<string>
         {
-            quizItem.answer_1,
+            quizItem.correct_answer,
             quizItem.answer_2,
             quizItem.answer_3
         }.OrderBy(a => UnityEngine.Random.value).ToList();
@@ -164,73 +157,40 @@ public class Manager_Progression : MonoBehaviour
     /// <param name="chosenAnswer">The answer selected by the user</param>
     private void OnAnswerSelected(QuizItem quizItem, string chosenAnswer)
     {
-
-        if (chosenAnswer == quizItem.answer_1)          //change column to 'correct_answer'
+        //add SoundManager
+        if (chosenAnswer == quizItem.correct_answer)          //change column to 'correct_answer'
         {
             //Add button style in case of wrong answer
             OnCorrectAnswerClicked();
             if (enableDebugLogs)
-                Debug.Log($"Correct answer. chosenAnswer: {chosenAnswer}, correct_answer: {quizItem.answer_1}");
+                Debug.Log($"Correct answer. chosenAnswer: {chosenAnswer}, correct_answer: {quizItem.correct_answer}");
         }
         else
         {
             //Add button style in case of wrong answer
             OnWrongAnswerClicked();
             if (enableDebugLogs)
-                Debug.Log($"Wrong answer. chosenAnswer: {chosenAnswer}, correct_answer: {quizItem.answer_1}");
+                Debug.Log($"Wrong answer. chosenAnswer: {chosenAnswer}, correct_answer: {quizItem.correct_answer}");
         }
-        
-        if (SoundManager.instance != null)
+
+        if (_questionCounter <= _quizItems.Count)
         {
-            if (isCorrect)
-            {
-                SoundManager.instance.PlayCorrectAnswer();
-            }
-            else
-            {
-                SoundManager.instance.PlayWrongAnswer();
-            }
+            _questionCounter++;
         }
-    }
-
-    private IEnumerator NewQuestionDelay()
-    {
-        yield return new WaitForSeconds(.9f);
-
-        ResetButtons();
-        RandomizeQuestion();
-    }
-
-    private void ResetButtons()
-    {
-        _answer1Button.interactable = true;
-        _answer2Button.interactable = true;
-        _answer3Button.interactable = true;
-
-        _answer1Button.GetComponent<ButtonAnimator>().enabled = true;
-        _answer2Button.GetComponent<ButtonAnimator>().enabled = true;
-        _answer3Button.GetComponent<ButtonAnimator>().enabled = true;
     }
 
     private void OnCorrectAnswerClicked()
     {
-        _questionCounter++;
-        _questionCounterText.text = $"Domanda {_questionCounter}/ {_quizItems.Count}";
-        _answer1Button.image.color = Color.green;
-        _answer2Button.image.color = Color.softRed;
-        _answer3Button.image.color = Color.softRed;
-        _answer1Button.interactable = false;
-        _answer2Button.interactable = false;
-        _answer3Button.interactable = false;
-        _answer1Button.GetComponent<ButtonAnimator>().enabled = false;
-        _answer2Button.GetComponent<ButtonAnimator>().enabled = false;
-        _answer3Button.GetComponent<ButtonAnimator>().enabled = false;
-        StartCoroutine(NewQuestionDelay());
+        //question refresh
+
+        //panelManager.ShowQuestionPanel();
     }
 
     private void OnWrongAnswerClicked()
     {
-        _explanationText.text = _currentQuizItem.explanation;
-        _panelManager.ShowWrongAnswerPanel();
+        //current canvas/panel => SetActive(false)
+        //explanation canvas/panel => SetActive(true)
+
+        //add PanelManager
     }
 }
