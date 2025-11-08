@@ -80,7 +80,7 @@ public class Manager_Progression : MonoBehaviour
             return;
         }
 
-        _quizItems = quizItems;
+        _quizItems = quizItems;        
         if (enableDebugLogs)
             Debug.Log($"Loaded {_quizItems.Count} quiz items.");
 
@@ -103,7 +103,7 @@ public class Manager_Progression : MonoBehaviour
         QuizItem chosenQuizItem = _quizItems[quizItemIndex];
         _quizItems.RemoveAt(quizItemIndex);
         if (enableDebugLogs)
-            Debug.Log($"Quiz item randomly selected => ID: {chosenQuizItem.quiz_item_id}, Correct Answer: {chosenQuizItem.answer_1}");
+            Debug.Log($"Quiz item randomly selected => ID: {chosenQuizItem.quiz_item_id}, Correct Answer: {chosenQuizItem.correct_answer}, Answer #2: {chosenQuizItem.answer_2}");
 
         _questionText.text = chosenQuizItem.question_text;
 
@@ -142,7 +142,7 @@ public class Manager_Progression : MonoBehaviour
     {
         List<string> answers = new List<string>
         {
-            quizItem.answer_1,
+            quizItem.correct_answer,
             quizItem.answer_2,
             quizItem.answer_3
         }.OrderBy(a => UnityEngine.Random.value).ToList();
@@ -158,19 +158,19 @@ public class Manager_Progression : MonoBehaviour
     private void OnAnswerSelected(QuizItem quizItem, string chosenAnswer)
     {
         //add SoundManager
-        if (chosenAnswer == quizItem.answer_1)          //change column to 'correct_answer'
+        if (chosenAnswer == quizItem.correct_answer)          //change column to 'correct_answer'
         {
             //Add button style in case of wrong answer
             OnCorrectAnswerClicked();
             if (enableDebugLogs)
-                Debug.Log($"Correct answer. chosenAnswer: {chosenAnswer}, correct_answer: {quizItem.answer_1}");
+                Debug.Log($"Correct answer. chosenAnswer: {chosenAnswer}, correct_answer: {quizItem.correct_answer}");
         }
         else
         {
             //Add button style in case of wrong answer
             OnWrongAnswerClicked();
             if (enableDebugLogs)
-                Debug.Log($"Wrong answer. chosenAnswer: {chosenAnswer}, correct_answer: {quizItem.answer_1}");
+                Debug.Log($"Wrong answer. chosenAnswer: {chosenAnswer}, correct_answer: {quizItem.correct_answer}");
         }
 
         if (_questionCounter <= _quizItems.Count)
