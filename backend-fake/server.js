@@ -58,6 +58,68 @@ app.post('/api/users/login', async (req, res) => {      //choosen POST instead o
     }
 });
 
+app.post('/api/users/create-user', async (req, res) => {
+    console.log("POST body:", req.body);
+    try {
+        const { nickname, password } = req.body;
+
+        if (!nickname || !password) {
+            return res.status(400).json({ error: 'Nickname and password are required' });
+        }
+
+        const [existingUser] = await db.execute(
+            'SELECT * FROM users WHERE nickname = ?',
+            [nickname]
+        );
+
+        if (existingUser.length > 0) {
+            return res.status(409).json({ error: true, message: 'User already exists' });
+        }
+
+        const nicknameValue = nickname || null;
+        const passwordValue = password || null;
+
+        const [result] = await db.execute(
+            'INSERT INTO users (nickname, password) VALUES (?, ?)',
+            [nicknameValue, passwordValue]
+        );
+
+        const [newUser] = await db.execute(
+            'SELECT * FROM users WHERE id = ?',
+            [result.insertId]
+        );
+
+        res.status(201).json(newUser[0]);
+    } catch (error) {
+        console.log("MySQL not available for POST", error.message);
+        res.status(500).json({ error: 'Error creating user' });
+    }
+});
+
+app.post('/api/users/delete-user', async (req, res) => {         //choosen POST instead of DELETE to not show the password in the url
+    try {
+        const { nickname, password } = req.body;
+
+        if (!nickname || !password) {
+            return res.status(400).json({ error: 'Nickname and password are required' });
+        }
+
+        const [result] = await db.execute(
+            'DELETE FROM users WHERE nickname = ? AND password = ?',
+            [nickname, password]
+        );
+
+        if (result.affectedRows === 0) {
+            return res.status(404).json({ error: 'Invalid nickname or password' });
+        }
+
+        res.json({ message: 'User deleted successfully' });
+    } catch (error) {
+        console.error('Error deleting user:', error);
+        res.status(500).json({ error: 'Error deleting user' });
+    }
+})
+
 // Listener
 app.listen(port, () => {
     console.log(`Server Node.js in ascolto su http://localhost:${port}`);
@@ -65,5 +127,7 @@ app.listen(port, () => {
     console.log(`- GET /api/quiz_items/test`);
     console.log(`- GET /api/users/test`);
     console.log(`- GET /api/quiz_items/:category_id`);
-    console.log(`- GET /api/users/:id`);
+    console.log(`- GET /api/users/login`);
+    console.log(`- GET /api/users/create-user`);
+    console.log(`- GET /api/users/delete-user`);
 });
