@@ -82,11 +82,14 @@ public class Manager_Progression : MonoBehaviour
             return;
         }
 
-        _quizItems = quizItems;
+
+        _quizItems = new List<QuizItem>(quizItems);
+        _totalQuestions = _quizItems.Count;
+        _questionCounter = 1;
+
         if (enableDebugLogs)
             Debug.Log($"Loaded {_quizItems.Count} quiz items.");
 
-        _totalQuestions = _quizItems.Count;
         _questionCounterText.text = $"Domanda: {_questionCounter}/ {_totalQuestions}";
 
         RandomizeQuestion();
@@ -97,23 +100,20 @@ public class Manager_Progression : MonoBehaviour
     /// </summary>
     private void RandomizeQuestion()
     {
-        if (_quizItems.Count == 0)
+        if (_questionCounter == 0)
         {
-            if (enableDebugLogs)
-                Debug.Log("No more quiz items left");
+            _panelManager.ShowEndPanel();
             return;
         }
 
         int quizItemIndex = UnityEngine.Random.Range(0, _quizItems.Count);
-        QuizItem chosenQuizItem = _quizItems[quizItemIndex];
+        _currentQuizItem = _quizItems[quizItemIndex];
         _quizItems.RemoveAt(quizItemIndex);
+        _questionText.text = _currentQuizItem.question_text;
         if (enableDebugLogs)
-            Debug.Log($"Quiz item randomly selected => ID: {chosenQuizItem.quiz_item_id}, Correct Answer: {chosenQuizItem.correct_answer}, Answer #2: {chosenQuizItem.answer_2}");
+            Debug.Log($"Quiz item randomly selected => ID: {_currentQuizItem.quiz_item_id}, Correct Answer: {_currentQuizItem.correct_answer}, Answer #2: {_currentQuizItem.answer_2}");
 
-        _currentQuizItem = chosenQuizItem;
-        _questionText.text = chosenQuizItem.question_text;
-
-        AssingAnswersToButtons(chosenQuizItem);
+        AssingAnswersToButtons(_currentQuizItem);
     }
 
     /// <summary>
@@ -185,17 +185,14 @@ public class Manager_Progression : MonoBehaviour
     /// Resets buttons after new questions, setting their interactability to true and resetting their color and animator
     /// </summary>
 
-    private void ResetButton() //Reset buttons after new questions
+    private void ResetButton()
     {
-        _answer1Button.interactable = true;
-        _answer2Button.interactable = true;
-        _answer3Button.interactable = true;
-        _answer1Button.image.color = new Color32(255, 255, 255, 0);
-        _answer2Button.image.color = new Color32(255, 255, 255, 0);
-        _answer3Button.image.color = new Color32(255, 255, 255, 0);
-        _answer1Button.GetComponent<ButtonAnimator>().enabled = true;
-        _answer2Button.GetComponent<ButtonAnimator>().enabled = true;
-        _answer3Button.GetComponent<ButtonAnimator>().enabled = true;
+        foreach (var button in new[] { _answer1Button, _answer2Button, _answer3Button })
+        {
+            button.interactable = true;
+            button.image.color = new Color32(255, 255, 255, 0);
+            button.GetComponent<ButtonAnimator>().enabled = true;
+        }
     }
 
     /// <summary>
@@ -214,27 +211,17 @@ public class Manager_Progression : MonoBehaviour
         if (SoundManager.instance != null)
             SoundManager.instance.PlayCorrectAnswer();
 
-
-        _questionCounter++;
-        _questionCounterText.text = $"Domanda: {_questionCounter}/ {_totalQuestions}";
-
         correctButton.image.color = Color.green;
 
         foreach (var button in new[] { _answer1Button, _answer2Button, _answer3Button })
         {
             if (button != correctButton)
                 button.image.color = Color.softRed;
+
+            button.interactable = false;
+            button.GetComponent<ButtonAnimator>().enabled = false;
         }
 
-        //Disable buttons after correct answer
-        _answer1Button.interactable = false;
-        _answer2Button.interactable = false;
-        _answer3Button.interactable = false;
-        //Disable button animator
-        _answer1Button.GetComponent<ButtonAnimator>().enabled = false;
-        _answer2Button.GetComponent<ButtonAnimator>().enabled = false;
-        _answer3Button.GetComponent<ButtonAnimator>().enabled = false;
-        //After correct answer we stay on the question panel and we wait for a new question
         _panelManager.ShowQuestionPanel();
         StartCoroutine(NewQuestionDelay());
 
@@ -244,16 +231,23 @@ public class Manager_Progression : MonoBehaviour
     /// Delay between questions, waits for 1 second and then resets buttons, randomizes a new question and shows the end panel if the total questions have been answered
     /// </summary>
 
-    private IEnumerator NewQuestionDelay() //Delay between questions
+    private IEnumerator NewQuestionDelay()
     {
         yield return new WaitForSeconds(1f);
 
+        _questionCounter++;
+        // _currentQuizItemIndex++;
+
         if (_questionCounter > _totalQuestions)
         {
+            _questionCounter = _totalQuestions;
+            _questionCounterText.text = $"Domanda: {_questionCounter}/{_totalQuestions}";
             _panelManager.ShowEndPanel();
             yield break;
         }
 
+        
+        _questionCounterText.text = $"Domanda: {_questionCounter}/{_totalQuestions}";
         ResetButton();
         RandomizeQuestion();
     }
