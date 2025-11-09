@@ -1,11 +1,11 @@
-const mysql = require('mysql2');
+const mysql = require("mysql2");
 
 // Crea il pool di connessioni
 const pool = mysql.createPool({
-    host: 'localhost',
-    user: 'root',        // il tuo utente MySQL
-    password: 'root', // la tua password MySQL
-    database: 'quizgame_db'   // il database che userai
+  host: "localhost",
+  user: "root", // il tuo utente MySQL
+  password: "Verdeverde9", // la tua password MySQL
+  database: "quizgame_db", // il database che userai
 });
 
 // Trasforma in promise per usare async/await
