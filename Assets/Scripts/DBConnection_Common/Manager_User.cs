@@ -45,6 +45,7 @@ public class Manager_User : MonoBehaviour
     public UnityAction<User> OnUserLoaded;
     public UnityAction<User> OnUserCreated;
     public UnityAction<User> OnUserDeleted;
+    public UnityAction<User> OnUserUpdated;
     public UnityAction<string> OnError;
 
     [Header("Debug")]
@@ -79,7 +80,7 @@ public class Manager_User : MonoBehaviour
     {
         User user = new User(nickname, password);
         StartCoroutine(DeleteUserCoroutine(user));
-    }
+    }    
 
     #endregion
 
@@ -90,7 +91,7 @@ public class Manager_User : MonoBehaviour
         if (enableDebugLogs)
             Debug.Log("Testing connection to server from Manager_Users");
 
-        using (UnityWebRequest request = UnityWebRequest.Get($"{baseUrl}/test"))
+        using (UnityWebRequest request = UnityWebRequest.Get($"{baseUrl}/test-connection"))
         {
             yield return request.SendWebRequest();
 

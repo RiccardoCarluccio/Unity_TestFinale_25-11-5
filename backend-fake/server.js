@@ -12,11 +12,11 @@ app.use(cors({
 app.use(bodyParser.json());
 
 // Test endpoint for connection
-app.get('/api/quiz_items/test', (req, res) => {
+app.get('/api/quiz_items/test-connection', (req, res) => {
     res.json({ message: 'Server is running!', timestamp: new Date().toISOString() });
 });
 
-app.get('/api/users/test', (req, res) => {
+app.get('/api/users/test-connection', (req, res) => {
     res.json({ message: 'Server is running!', timestamp: new Date().toISOString() });
 });
 
@@ -124,10 +124,10 @@ app.post('/api/users/delete-user', async (req, res) => {         //choosen POST 
 app.listen(port, () => {
     console.log(`Server Node.js in ascolto su http://localhost:${port}`);
     console.log(`Endpoint disponibili`);
-    console.log(`- GET /api/quiz_items/test`);
-    console.log(`- GET /api/users/test`);
+    console.log(`- GET /api/quiz_items/test-connection`);
+    console.log(`- GET /api/users/test-connection`);
     console.log(`- GET /api/quiz_items/:category_id`);
-    console.log(`- GET /api/users/login`);
-    console.log(`- GET /api/users/create-user`);
-    console.log(`- GET /api/users/delete-user`);
+    console.log(`- POST /api/users/login`);
+    console.log(`- POST /api/users/create-user`);
+    console.log(`- POST /api/users/delete-user`);
 });

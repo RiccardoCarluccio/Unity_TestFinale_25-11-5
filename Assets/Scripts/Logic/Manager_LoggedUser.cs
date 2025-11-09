@@ -149,5 +149,5 @@ public class Manager_LoggedUser : MonoBehaviour
     {
         _userActionUpdate.color = Color.black;
         _userActionUpdate.text = "Utente eliminato con successo!";
-    }
+    }    
 }
