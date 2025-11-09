@@ -5,10 +5,11 @@ public class PanelManager : MonoBehaviour
 
 
 {
-    
+
     [Header("Pannelli")]
     public GameObject questionPanel;
     public GameObject wrongAnswerPanel;
+    public GameObject endPanel;
 
     void Start()
     {
@@ -30,43 +31,55 @@ public class PanelManager : MonoBehaviour
         wrongAnswerPanel.SetActive(true);
     }
 
+    // Mostra il pannello di fine, nasconde gli altri
+    public void ShowEndPanel()
+    {
+        questionPanel.SetActive(false);
+        endPanel.SetActive(true);
+    }
+
     public void ShowWrongAnswerPanelWithFade()
-{
-    StartCoroutine(FadeTransition(questionPanel, wrongAnswerPanel));
-}
-
-public void ShowQuestionPanelWithFade()
-{
-    StartCoroutine(FadeTransition(wrongAnswerPanel, questionPanel));
-}
-
-IEnumerator FadeTransition(GameObject fromPanel, GameObject toPanel)
-{
-    CanvasGroup fromGroup = fromPanel.GetComponent<CanvasGroup>();
-    CanvasGroup toGroup = toPanel.GetComponent<CanvasGroup>();
-
-    // Fade out
-    float t = 0;
-    while (t < 0.3f)
     {
-        t += Time.deltaTime;
-        fromGroup.alpha = 1 - (t / 0.3f);
-        yield return null;
+        StartCoroutine(FadeTransition(questionPanel, wrongAnswerPanel));
     }
 
-    fromPanel.SetActive(false);
-    toPanel.SetActive(true);
-    toGroup.alpha = 0;
-
-    // Fade in
-    t = 0;
-    while (t < 0.3f)
+    public void ShowQuestionPanelWithFade()
     {
-        t += Time.deltaTime;
-        toGroup.alpha = t / 0.3f;
-        yield return null;
+        StartCoroutine(FadeTransition(wrongAnswerPanel, questionPanel));
     }
-    
-    toGroup.alpha = 1;
-}
+
+    public void ShowEndPanelWithFade()
+    {
+        StartCoroutine(FadeTransition(questionPanel, endPanel));
+    }
+
+    IEnumerator FadeTransition(GameObject fromPanel, GameObject toPanel)
+    {
+        CanvasGroup fromGroup = fromPanel.GetComponent<CanvasGroup>();
+        CanvasGroup toGroup = toPanel.GetComponent<CanvasGroup>();
+
+        // Fade out
+        float t = 0;
+        while (t < 0.3f)
+        {
+            t += Time.deltaTime;
+            fromGroup.alpha = 1 - (t / 0.3f);
+            yield return null;
+        }
+
+        fromPanel.SetActive(false);
+        toPanel.SetActive(true);
+        toGroup.alpha = 0;
+
+        // Fade in
+        t = 0;
+        while (t < 0.3f)
+        {
+            t += Time.deltaTime;
+            toGroup.alpha = t / 0.3f;
+            yield return null;
+        }
+
+        toGroup.alpha = 1;
+    }
 }
