@@ -16,14 +16,12 @@ public class Manager_Progression : MonoBehaviour
     [SerializeField] private Button _answer1Button, _answer2Button, _answer3Button;
     [SerializeField] private TextMeshProUGUI _questionText, _questionCounterText, _explanationText;
     [SerializeField] private PanelManager _panelManager;
-    //SoundManager and PanelManager
-    //_questionPanel and _explanationPanel?
 
     private int _category_id;
     private List<QuizItem> _quizItems = new();
     private int _questionCounter = 1;
-    private bool isCorrect = true;
     private QuizItem _currentQuizItem;
+    private int _totalQuestions;
 
     [Header("Debug")]
     public bool enableDebugLogs = true;
@@ -61,7 +59,8 @@ public class Manager_Progression : MonoBehaviour
 
             _managerCrud.LoadQuizItemsByCategory(_category_id);     //calls OnQuizItemsLoaded event
 
-            _questionCounterText.text = $"Domanda: {_questionCounter}/ {_quizItems.Count}";
+            if (enableDebugLogs)
+                Debug.Log($"total questions: {_quizItems.Count}");
         }
         else
         {
@@ -83,9 +82,15 @@ public class Manager_Progression : MonoBehaviour
             return;
         }
 
-        _quizItems = quizItems;
+
+        _quizItems = new List<QuizItem>(quizItems);
+        _totalQuestions = _quizItems.Count;
+        _questionCounter = 1;
+
         if (enableDebugLogs)
             Debug.Log($"Loaded {_quizItems.Count} quiz items.");
+
+        _questionCounterText.text = $"Domanda: {_questionCounter}/ {_totalQuestions}";
 
         RandomizeQuestion();
     }
@@ -95,23 +100,20 @@ public class Manager_Progression : MonoBehaviour
     /// </summary>
     private void RandomizeQuestion()
     {
-        if (_quizItems.Count == 0)
+        if (_questionCounter == 0)
         {
-            if (enableDebugLogs)
-                Debug.Log("No more quiz items left");
+            _panelManager.ShowEndPanel();
             return;
         }
 
         int quizItemIndex = UnityEngine.Random.Range(0, _quizItems.Count);
-        QuizItem chosenQuizItem = _quizItems[quizItemIndex];
+        _currentQuizItem = _quizItems[quizItemIndex];
         _quizItems.RemoveAt(quizItemIndex);
+        _questionText.text = _currentQuizItem.question_text;
         if (enableDebugLogs)
-            Debug.Log($"Quiz item randomly selected => ID: {chosenQuizItem.quiz_item_id}, Correct Answer: {chosenQuizItem.correct_answer}, Answer #2: {chosenQuizItem.answer_2}");
+            Debug.Log($"Quiz item randomly selected => ID: {_currentQuizItem.quiz_item_id}, Correct Answer: {_currentQuizItem.correct_answer}, Answer #2: {_currentQuizItem.answer_2}");
 
-        _currentQuizItem = chosenQuizItem;
-        _questionText.text = chosenQuizItem.question_text;
-
-        AssingAnswersToButtons(chosenQuizItem);
+        AssingAnswersToButtons(_currentQuizItem);
     }
 
     /// <summary>
@@ -132,9 +134,9 @@ public class Manager_Progression : MonoBehaviour
         _answer2Button.GetComponentInChildren<TextMeshProUGUI>().text = randomizedAnswers[1];
         _answer3Button.GetComponentInChildren<TextMeshProUGUI>().text = randomizedAnswers[2];
 
-        _answer1Button.onClick.AddListener(() => OnAnswerSelected(quizItem, randomizedAnswers[0]));
-        _answer2Button.onClick.AddListener(() => OnAnswerSelected(quizItem, randomizedAnswers[1]));
-        _answer3Button.onClick.AddListener(() => OnAnswerSelected(quizItem, randomizedAnswers[2]));
+        _answer1Button.onClick.AddListener(() => OnAnswerSelected(_answer1Button, quizItem, randomizedAnswers[0]));
+        _answer2Button.onClick.AddListener(() => OnAnswerSelected(_answer2Button, quizItem, randomizedAnswers[1]));
+        _answer3Button.onClick.AddListener(() => OnAnswerSelected(_answer3Button, quizItem, randomizedAnswers[2]));
     }
 
     /// <summary>
@@ -159,25 +161,12 @@ public class Manager_Progression : MonoBehaviour
     /// </summary>
     /// <param name="quizItem">The quiz item containing the correct answer</param>
     /// <param name="chosenAnswer">The answer selected by the user</param>
-    private void OnAnswerSelected(QuizItem quizItem, string chosenAnswer)
+    private void OnAnswerSelected(Button clickedButton, QuizItem quizItem, string chosenAnswer)
     {
-
-        if (SoundManager.instance != null)
-        {
-            if (isCorrect)
-            {
-                SoundManager.instance.PlayCorrectAnswer();
-            }
-            else
-            {
-                SoundManager.instance.PlayWrongAnswer();
-            }
-        }
-
         if (chosenAnswer == quizItem.correct_answer)          //change column to 'correct_answer'
         {
-            //Add button style in case of wrong answer
-            OnCorrectAnswerClicked();
+            //Add button style in case of correct answer
+            OnCorrectAnswerClicked(clickedButton);
             if (enableDebugLogs)
                 Debug.Log($"Correct answer. chosenAnswer: {chosenAnswer}, correct_answer: {quizItem.correct_answer}");
         }
@@ -188,54 +177,87 @@ public class Manager_Progression : MonoBehaviour
             if (enableDebugLogs)
                 Debug.Log($"Wrong answer. chosenAnswer: {chosenAnswer}, correct_answer: {quizItem.correct_answer}");
         }
+    }
 
-        if (_questionCounter <= _quizItems.Count)
+
+
+    /// <summary>
+    /// Resets buttons after new questions, setting their interactability to true and resetting their color and animator
+    /// </summary>
+
+    private void ResetButton()
+    {
+        foreach (var button in new[] { _answer1Button, _answer2Button, _answer3Button })
         {
-            _questionCounter++;
+            button.interactable = true;
+            button.image.color = new Color32(255, 255, 255, 0);
+            button.GetComponent<ButtonAnimator>().enabled = true;
         }
     }
 
+    /// <summary>
+    /// Called when the correct answer button is clicked
+    /// </summary>
+    /// <param name="correctButton">The correct answer button</param>
+    /// <remarks>
+    /// Plays the correct answer sound, increments the question counter,
+    /// sets the question counter text, sets the correct answer button color to green,
+    /// sets the other answer buttons color to soft red, disables the answer buttons,
+    /// disables the button animator, shows the question panel and waits for a new question
+    /// </remarks>
+
+    private void OnCorrectAnswerClicked(Button correctButton)
+    {
+        if (SoundManager.instance != null)
+            SoundManager.instance.PlayCorrectAnswer();
+
+        correctButton.image.color = Color.green;
+
+        foreach (var button in new[] { _answer1Button, _answer2Button, _answer3Button })
+        {
+            if (button != correctButton)
+                button.image.color = Color.softRed;
+
+            button.interactable = false;
+            button.GetComponent<ButtonAnimator>().enabled = false;
+        }
+
+        _panelManager.ShowQuestionPanel();
+        StartCoroutine(NewQuestionDelay());
+
+    }
+
+    /// <summary>
+    /// Delay between questions, waits for 1 second and then resets buttons, randomizes a new question and shows the end panel if the total questions have been answered
+    /// </summary>
+
     private IEnumerator NewQuestionDelay()
     {
-        yield return new WaitForSeconds(.9f);
+        yield return new WaitForSeconds(1f);
 
+        _questionCounter++;
+        // _currentQuizItemIndex++;
+
+        if (_questionCounter > _totalQuestions)
+        {
+            _questionCounter = _totalQuestions;
+            _questionCounterText.text = $"Domanda: {_questionCounter}/{_totalQuestions}";
+            _panelManager.ShowEndPanel();
+            yield break;
+        }
+
+        
+        _questionCounterText.text = $"Domanda: {_questionCounter}/{_totalQuestions}";
         ResetButton();
         RandomizeQuestion();
     }
 
-    private void ResetButton()
-    {
-        _answer1Button.interactable = true;
-        _answer2Button.interactable = true;
-        _answer3Button.interactable = true;
-        _answer1Button.image.color = new Color32(255, 233, 162, 0);
-        _answer2Button.image.color = new Color32(255, 233, 162, 0);
-        _answer3Button.image.color = new Color32(255, 233, 162, 0);
-        _answer1Button.GetComponent<ButtonAnimator>().enabled = true;
-        _answer2Button.GetComponent<ButtonAnimator>().enabled = true;
-        _answer3Button.GetComponent<ButtonAnimator>().enabled = true;
-    }
-
-    private void OnCorrectAnswerClicked()
-    {
-        _questionCounter++;
-        _questionCounterText.text = $"Domanda: {_questionCounter}/ {_quizItems.Count}";
-        _answer1Button.image.color = Color.green;
-        _answer2Button.image.color = Color.softRed;
-        _answer3Button.image.color = Color.softRed;
-        _answer1Button.interactable = false;
-        _answer2Button.interactable = false;
-        _answer3Button.interactable = false;
-        _answer1Button.GetComponent<ButtonAnimator>().enabled = false;
-        _answer2Button.GetComponent<ButtonAnimator>().enabled = false;
-        _answer3Button.GetComponent<ButtonAnimator>().enabled = false;
-        _panelManager.ShowQuestionPanel();
-        StartCoroutine(NewQuestionDelay());
-    }
-
     private void OnWrongAnswerClicked()
     {
+        if (SoundManager.instance != null)
+            SoundManager.instance.PlayWrongAnswer();
         _panelManager.ShowWrongAnswerPanel();
         _explanationText.text = _currentQuizItem.explanation;
     }
+
 }
