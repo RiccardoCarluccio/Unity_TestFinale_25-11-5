@@ -34,7 +34,7 @@ app.get('/api/quiz_items/:category_id', async (req, res) => {
 });
 
 // User endpoints
-app.post('/api/users/:nickname', async (req, res) => {      //choosen POST instead of GET to not show the password in the url
+app.post('/api/users/login', async (req, res) => {      //choosen POST instead of GET to not show the password in the url
     try {
         const { nickname, password } = req.body;
 
@@ -42,13 +42,13 @@ app.post('/api/users/:nickname', async (req, res) => {      //choosen POST inste
             return res.status(400).json({ error: 'Nickname and password are required' });
         }
 
-        const [user] = await db.query(
+        const [rows] = await db.query(
             'SELECT * FROM users WHERE nickname = ? AND password = ?',
             [nickname, password]
         );
 
-        if (user) {
-            res.json(user);
+        if (rows) {
+            res.json(rows[0]);
         } else {
             res.status(404).json({ error: 'User or password invalid' });
         }

@@ -34,7 +34,7 @@ public class UserResponse
     public string details;
 }
 
-//Wrapper
+//Wrapper in case of an admin retrieving all the users with a GetAllUsers()
 
 public class Manager_User : MonoBehaviour
 {
@@ -122,7 +122,7 @@ public class Manager_User : MonoBehaviour
                         Debug.Log($"Loaded user: {userFound.nickname}");
 
                     // Per una singola task, la passiamo in una lista
-                    OnUserLoaded?.Invoke(new User(userFound.nickname, userFound.password, userFound.certificates));
+                    OnUserLoaded?.Invoke(userFound);
                 }
                 catch (Exception e)
                 {
