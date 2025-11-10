@@ -18,7 +18,7 @@ public class Manager_LoggedUser : MonoBehaviour
 
     [Header("Register Panel")]
     [SerializeField] private GameObject _registerPanel;
-    [SerializeField] private TMP_InputField _registerNicknameField, _registerPasswordField;
+    [SerializeField] private TMP_InputField _registerNicknameField, _registerPasswordField, _confirmPasswordField, _emailField;
     [SerializeField] private Button _returnToLoginButton, _createUserButton;
 
     [Header("User Panel")]
@@ -142,14 +142,33 @@ public class Manager_LoggedUser : MonoBehaviour
     {
         string nickname = _registerNicknameField.text.Trim();
         string password = _registerPasswordField.text.Trim();
+        string confirmPassword = _confirmPasswordField.text.Trim();
+        string email = _emailField.text.Trim();
 
-        if (string.IsNullOrEmpty(nickname) || string.IsNullOrEmpty(password))
+        if (string.IsNullOrEmpty(nickname) || string.IsNullOrEmpty(password) || string.IsNullOrEmpty(confirmPassword) || confirmPassword != password)
         {
+            _userActionUpdate.text = "nickname e/o password mancanti o le password non corrispondono.";
+            StartCoroutine(ActionUpdateTextDelay(_userActionUpdate));
             Debug.LogError("Missing nickname and/or password");
             return;
         }
 
-        _userManager.CreateUser(nickname, password);
+        _userActionUpdate.text = "nickname e/o password mancanti o le password non corrispondono.";
+        StartCoroutine(ActionUpdateTextDelay(_userActionUpdate));
+
+
+        if (string.IsNullOrEmpty(email) || !email.Contains("@"))
+        {
+            _userActionUpdate.text = "email non valida.";
+            StartCoroutine(ActionUpdateTextDelay(_userActionUpdate));
+            Debug.LogError("Invalid email");
+            return;
+        }
+        
+        _userActionUpdate.text = "email non valida.";
+        StartCoroutine(ActionUpdateTextDelay(_userActionUpdate));
+        
+        _userManager.CreateUser(nickname, password, email);
     }
 
     private void UserCreated(User user)

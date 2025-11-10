@@ -10,12 +10,20 @@ public class User
     public int id;
     public string nickname;
     public string password;
+    public string email;
     public Certificates certificates;
 
     public User(string nickname, string password)
     {
         this.nickname = nickname;
         this.password = password;
+    }
+
+    public User(string nickname, string password, string email)
+    {
+        this.nickname = nickname;
+        this.password = password;
+        this.email = email;
     }
 
     public User(string nickname, string password, Certificates certificates)
@@ -70,9 +78,9 @@ public class Manager_User : MonoBehaviour
         StartCoroutine(GetUserByNicknameAndPasswordCoroutine(user));
     }
 
-    public void CreateUser(string nickname, string password)
+    public void CreateUser(string nickname, string password, string email)
     {
-        User user = new User(nickname, password);
+        User user = new User(nickname, password, email);
         StartCoroutine(CreateUserCoroutine(user));
     }
 
@@ -80,7 +88,7 @@ public class Manager_User : MonoBehaviour
     {
         User user = new User(nickname, password);
         StartCoroutine(DeleteUserCoroutine(user));
-    }    
+    }
 
     #endregion
 
@@ -204,7 +212,7 @@ public class Manager_User : MonoBehaviour
                 ConnectionHelper.HandleRequestError(request, $"Creating user {user.nickname}", enableDebugLogs, OnError);
             }
         }
-    }    
+    }
 
     private IEnumerator DeleteUserCoroutine(User user)
     {
