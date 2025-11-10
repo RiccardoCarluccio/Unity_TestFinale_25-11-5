@@ -13,6 +13,7 @@ public class Manager_Progression : MonoBehaviour
     public static Manager_Progression Instance { get { return _instance; } }
 
     [SerializeField] private Manager_CRUD _managerCrud;
+    [SerializeField] private Manager_User _userManager;
     [SerializeField] private Button _answer1Button, _answer2Button, _answer3Button;
     [SerializeField] private TextMeshProUGUI _questionText, _questionCounterText, _explanationText;
     [SerializeField] private PanelManager _panelManager;
@@ -25,6 +26,8 @@ public class Manager_Progression : MonoBehaviour
 
     [Header("Debug")]
     public bool enableDebugLogs = true;
+    public bool IsTesting = true;
+    public int numOfQuestions = 1;
 
     private void Awake()
     {
@@ -82,9 +85,11 @@ public class Manager_Progression : MonoBehaviour
             return;
         }
 
-
         _quizItems = new List<QuizItem>(quizItems);
-        _totalQuestions = _quizItems.Count;
+        if (IsTesting)
+            _totalQuestions = numOfQuestions;
+        else
+            _totalQuestions = _quizItems.Count;
         _questionCounter = 1;
 
         if (enableDebugLogs)
@@ -242,6 +247,31 @@ public class Manager_Progression : MonoBehaviour
         {
             _questionCounter = _totalQuestions;
             _questionCounterText.text = $"Domanda: {_questionCounter}/{_totalQuestions}";
+
+            if (LoggedUser.Instance == null || LoggedUser.Instance.User == null)
+            {
+                if (enableDebugLogs)
+                    Debug.LogError("LoggedUser.Instance or User is null!");
+                _panelManager.ShowEndPanel();
+                yield break;
+            }
+
+            var currentSceneName = SceneManager.GetActiveScene().name;
+            if (Enum.TryParse(currentSceneName, out ChosenScene chosenScene))
+            {
+                var categoryName = chosenScene.ToString().Replace("Scene_", "");
+
+                if (Enum.TryParse(categoryName, true, out Certificates certificate))        //"true" makes the method case insensitive
+                {
+                    _userManager.UpdateCertificates(LoggedUser.Instance.User.nickname, certificate);
+                }
+                else
+                {
+                    if (enableDebugLogs)
+                        Debug.LogWarning($"No certificate found for category name: {categoryName}");
+                }
+            }
+
             _panelManager.ShowEndPanel();
             yield break;
         }
