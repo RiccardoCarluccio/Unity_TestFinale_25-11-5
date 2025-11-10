@@ -10,8 +10,14 @@ public class Manager_LoggedUser : MonoBehaviour
     [Header("Login Panel")]
     [SerializeField] private Manager_User _userManager;
     [SerializeField] private TMP_InputField _nicknameField, _passwordField;
-    [SerializeField] private Button _loginButton, _createUserButton, _deleteUserButton;
+    [SerializeField] private Button _loginButton, _deleteUserButton, _showRegisterPanel;
     [SerializeField] private TextMeshProUGUI _userActionUpdate;
+    [SerializeField] private GameObject _loginPanel;
+
+    [Header("Register Panel")]
+    [SerializeField] private GameObject _registerPanel;
+    [SerializeField] private TMP_InputField _registerNicknameField, _registerPasswordField;
+    [SerializeField] private Button _returnToLoginButton, _createUserButton;
 
     [Header("User Panel")]
     [SerializeField] private Image _userImage;
@@ -52,6 +58,8 @@ public class Manager_LoggedUser : MonoBehaviour
         _loginButton.onClick.AddListener(OnLoginButtonClicked);
         _createUserButton.onClick.AddListener(OnCreateUserClicked);
         _deleteUserButton.onClick.AddListener(OnDeleteUserClicked);
+        _showRegisterPanel.onClick.AddListener(OnRegisterButtonClicked);
+        _returnToLoginButton.onClick.AddListener(OnRegisterPanelLoginButtonClicked);
 
         _disconnectButton.onClick.AddListener(OnDisconnectButtonClicked);
         _userImage.color = Color.red;
@@ -77,7 +85,7 @@ public class Manager_LoggedUser : MonoBehaviour
         }
 
         _user = user;
-        _userActionUpdate.color = Color.black;
+        _userActionUpdate.color = Color.white;
         _userActionUpdate.text = "Login effettuato con successo!";
 
         if (enableDebugLogs)
@@ -107,14 +115,24 @@ public class Manager_LoggedUser : MonoBehaviour
         _userImage.color = Color.red;
         _nicknameText.text = "Ospite";
 
-        _userActionUpdate.color = Color.black;
+        _userActionUpdate.color = Color.white;
         _userActionUpdate.text = "Disconnessione effettuata con successo!";
+    }
+
+    private void OnRegisterButtonClicked()
+    {
+        ShowRegisterPanel();
+    }
+
+    private void OnRegisterPanelLoginButtonClicked()
+    {
+        ShowLoginPanel();
     }
 
     private void OnCreateUserClicked()
     {
-        string nickname = _nicknameField.text.Trim();
-        string password = _passwordField.text.Trim();
+        string nickname = _registerNicknameField.text.Trim();
+        string password = _registerPasswordField.text.Trim();
 
         if (string.IsNullOrEmpty(nickname) || string.IsNullOrEmpty(password))
         {
@@ -127,7 +145,7 @@ public class Manager_LoggedUser : MonoBehaviour
 
     private void UserCreated(User user)
     {
-        _userActionUpdate.color = Color.black;
+        _userActionUpdate.color = Color.white;
         _userActionUpdate.text = "Utente creato con successo!";
     }
 
@@ -147,7 +165,19 @@ public class Manager_LoggedUser : MonoBehaviour
 
     private void UserDeleted(User user)
     {
-        _userActionUpdate.color = Color.black;
+        _userActionUpdate.color = Color.white;
         _userActionUpdate.text = "Utente eliminato con successo!";
-    }    
+    }
+
+    private void ShowRegisterPanel()
+    {
+        _loginPanel.SetActive(false);
+        _registerPanel.SetActive(true);
+    }
+
+    private void ShowLoginPanel()
+    {
+        _loginPanel.SetActive(true);
+        _registerPanel.SetActive(false);
+    }
 }

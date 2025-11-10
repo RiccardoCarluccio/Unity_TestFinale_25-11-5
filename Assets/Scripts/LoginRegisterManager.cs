@@ -4,12 +4,12 @@ using TMPro;
 
 public class LoginRegisterManager : MonoBehaviour
 {
-    // Pannelli UI
+    [Header("Pannelli UI")]
     public GameObject loginPanel;
     public GameObject registerPanel;
     public GameObject modificaUtentePanel;
 
-    // Login 
+    [Header("Login")]
     public TMP_InputField loginUsernameInput;
     public TMP_InputField loginPasswordInput;
     public Button loginButton;
