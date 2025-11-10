@@ -61,10 +61,10 @@ app.post('/api/users/login', async (req, res) => {      //choosen POST instead o
 app.post('/api/users/create-user', async (req, res) => {
     console.log("POST body:", req.body);
     try {
-        const { nickname, password } = req.body;
+        const { nickname, password, email } = req.body;
 
-        if (!nickname || !password) {
-            return res.status(400).json({ error: 'Nickname and password are required' });
+        if (!nickname || !password || !email) {
+            return res.status(400).json({ error: 'Nickname, password and email are required' });
         }
 
         const [existingUser] = await db.execute(
@@ -78,10 +78,11 @@ app.post('/api/users/create-user', async (req, res) => {
 
         const nicknameValue = nickname || null;
         const passwordValue = password || null;
+        const emailValue = email || null;
 
         const [result] = await db.execute(
-            'INSERT INTO users (nickname, password) VALUES (?, ?)',
-            [nicknameValue, passwordValue]
+            'INSERT INTO users (nickname, password, email) VALUES (?, ?, ?)',
+            [nicknameValue, passwordValue, emailValue]
         );
 
         const [newUser] = await db.execute(
