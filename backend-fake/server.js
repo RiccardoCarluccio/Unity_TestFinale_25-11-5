@@ -121,6 +121,54 @@ app.post('/api/users/delete-user', async (req, res) => {         //choosen POST 
     }
 })
 
+app.patch('/api/users/update-certificate', async (req, res) => {
+    try {
+        const { nickname, certificates } = req.body;
+
+        if (!nickname) {
+            return res.status(400).json({ error: 'User not found ' });
+        }
+
+        if (!certificates) {
+            return res.status(400).json({ error: 'Certificate data is required ' });
+        }
+
+        const [userRows] = await db.execute(
+            'SELECT * FROM users WHERE nickname = ?',
+            [nickname]
+        );
+
+        if (userRows.length == 0) {
+            return res.status(400).json({ error: 'Invalid nickname' });
+        }
+
+        const currentCertificates = userRows[0].certificates || { sql: false, surf: false, videogames: false };
+        currentCertificates[certificates] = true;
+
+        const [result] = await db.execute(
+            'UPDATE users SET certificates = ? WHERE nickname = ?',
+            [JSON.stringify(currentCertificates), nickname]
+        );
+
+        if (result.affectedRows == 0) {
+            return res.status(500).json({ error: 'Failed to update certificates' });
+        }
+
+        const [updatedUserRows] = await db.execute(
+            'SELECT * FROM users WHERE nickname = ?',
+            [nickname]
+        );
+
+        res.json({
+            message: 'Certificates updated successfully',
+            user: updatedUserRows[0]
+        });
+    } catch (error) {
+        console.error('Error updating certificates', error);
+        res.status(500).json({ errror: 'Error updating certificates', details: error.message });
+    }
+});
+
 // Listener
 app.listen(port, () => {
     console.log(`Server Node.js in ascolto su http://localhost:${port}`);
@@ -131,4 +179,5 @@ app.listen(port, () => {
     console.log(`- POST /api/users/login`);
     console.log(`- POST /api/users/create-user`);
     console.log(`- POST /api/users/delete-user`);
+    console.log(`- PATCH /api/users/update-certificate`);
 });

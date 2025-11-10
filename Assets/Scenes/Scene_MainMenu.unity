@@ -2731,69 +2731,6 @@ CanvasRenderer:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 977409609}
   m_CullTransparentMesh: 1
---- !u!1 &1011452881
-GameObject:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  serializedVersion: 6
-  m_Component:
-  - component: {fileID: 1011452883}
-  - component: {fileID: 1011452882}
-  m_Layer: 0
-  m_Name: LoginManager
-  m_TagString: Untagged
-  m_Icon: {fileID: 0}
-  m_NavMeshLayer: 0
-  m_StaticEditorFlags: 0
-  m_IsActive: 1
---- !u!114 &1011452882
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1011452881}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 81bac1af8618fba41860202cca72a529, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: Assembly-CSharp::Manager_LoggedUser
-  _userManager: {fileID: 1607274201}
-  _nicknameField: {fileID: 0}
-  _passwordField: {fileID: 0}
-  _loginButton: {fileID: 0}
-  _deleteUserButton: {fileID: 0}
-  _showRegisterPanel: {fileID: 0}
-  _userActionUpdate: {fileID: 0}
-  _loginPanel: {fileID: 0}
-  _registerPanel: {fileID: 0}
-  _registerNicknameField: {fileID: 0}
-  _registerPasswordField: {fileID: 0}
-  _confirmPasswordField: {fileID: 0}
-  _emailField: {fileID: 0}
-  _returnToLoginButton: {fileID: 0}
-  _createUserButton: {fileID: 0}
-  _userImage: {fileID: 774156535}
-  _nicknameText: {fileID: 1852751078}
-  _disconnectButton: {fileID: 0}
-  enableDebugLogs: 1
---- !u!4 &1011452883
-Transform:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1011452881}
-  serializedVersion: 2
-  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 532.1835, y: 288.8771, z: 0}
-  m_LocalScale: {x: 1, y: 1, z: 1}
-  m_ConstrainProportionsScale: 0
-  m_Children: []
-  m_Father: {fileID: 0}
-  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &1020148664
 GameObject:
   m_ObjectHideFlags: 0
@@ -3068,7 +3005,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 4b6f12181d7d9a34fbae796856306f93, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::SceneLoader
-  _crudButton: {fileID: 1538909344}
+  _sqlButton: {fileID: 1538909344}
   _surfButton: {fileID: 1604539673}
   _gamesButton: {fileID: 2023685081}
   enableDebugLogs: 1
@@ -3800,7 +3737,7 @@ GameObject:
   - component: {fileID: 1538909348}
   - component: {fileID: 1538909349}
   m_Layer: 5
-  m_Name: CrudButton
+  m_Name: SqlButton
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -5372,7 +5309,6 @@ SceneRoots:
   - {fileID: 8093097854582853682}
   - {fileID: 1229308129}
   - {fileID: 1607274200}
-  - {fileID: 1011452883}
   - {fileID: 21911715}
   - {fileID: 282388296}
   - {fileID: 1444322067}
