@@ -1,5 +1,7 @@
+using System.Collections;
 using TMPro;
 using UnityEngine;
+using UnityEngine.SceneManagement;
 using UnityEngine.UI;
 
 public class Manager_LoggedUser : MonoBehaviour
@@ -16,7 +18,7 @@ public class Manager_LoggedUser : MonoBehaviour
 
     [Header("Register Panel")]
     [SerializeField] private GameObject _registerPanel;
-    [SerializeField] private TMP_InputField _registerNicknameField, _registerPasswordField;
+    [SerializeField] private TMP_InputField _registerNicknameField, _registerPasswordField, _confirmPasswordField, _emailField;
     [SerializeField] private Button _returnToLoginButton, _createUserButton;
 
     [Header("User Panel")]
@@ -73,6 +75,7 @@ public class Manager_LoggedUser : MonoBehaviour
     {
         _userActionUpdate.color = Color.red;
         _userActionUpdate.text = "Error";
+        StartCoroutine(ActionUpdateTextDelay(_userActionUpdate));
 
         if (enableDebugLogs)
             Debug.LogError(message);
@@ -90,6 +93,7 @@ public class Manager_LoggedUser : MonoBehaviour
         _user = user;
         _userActionUpdate.color = Color.white;
         _userActionUpdate.text = "Login effettuato con successo!";
+        StartCoroutine(ActionUpdateTextDelay(_userActionUpdate));
 
         if (enableDebugLogs)
             Debug.Log($"Logged user: {user.nickname}");
@@ -110,6 +114,7 @@ public class Manager_LoggedUser : MonoBehaviour
         }
 
         _userManager.LoadUserByNicknameAndPassword(nickname, password);
+        SceneManager.LoadScene("Scene_MainMenu");
     }
 
     private void OnDisconnectButtonClicked()
@@ -120,6 +125,7 @@ public class Manager_LoggedUser : MonoBehaviour
 
         _userActionUpdate.color = Color.white;
         _userActionUpdate.text = "Disconnessione effettuata con successo!";
+        StartCoroutine(ActionUpdateTextDelay(_userActionUpdate));
     }
 
     private void OnRegisterButtonClicked()
@@ -136,20 +142,40 @@ public class Manager_LoggedUser : MonoBehaviour
     {
         string nickname = _registerNicknameField.text.Trim();
         string password = _registerPasswordField.text.Trim();
+        string confirmPassword = _confirmPasswordField.text.Trim();
+        string email = _emailField.text.Trim();
 
-        if (string.IsNullOrEmpty(nickname) || string.IsNullOrEmpty(password))
+        if (string.IsNullOrEmpty(nickname) || string.IsNullOrEmpty(password) || string.IsNullOrEmpty(confirmPassword) || confirmPassword != password)
         {
+            _userActionUpdate.text = "nickname e/o password mancanti o le password non corrispondono.";
+            StartCoroutine(ActionUpdateTextDelay(_userActionUpdate));
             Debug.LogError("Missing nickname and/or password");
             return;
         }
 
-        _userManager.CreateUser(nickname, password);        
+        _userActionUpdate.text = "nickname e/o password mancanti o le password non corrispondono.";
+        StartCoroutine(ActionUpdateTextDelay(_userActionUpdate));
+
+
+        if (string.IsNullOrEmpty(email) || !email.Contains("@"))
+        {
+            _userActionUpdate.text = "email non valida.";
+            StartCoroutine(ActionUpdateTextDelay(_userActionUpdate));
+            Debug.LogError("Invalid email");
+            return;
+        }
+        
+        _userActionUpdate.text = "email non valida.";
+        StartCoroutine(ActionUpdateTextDelay(_userActionUpdate));
+        
+        _userManager.CreateUser(nickname, password, email);
     }
 
     private void UserCreated(User user)
     {
         _userActionUpdate.color = Color.white;
         _userActionUpdate.text = "Utente creato con successo!";
+        StartCoroutine(ActionUpdateTextDelay(_userActionUpdate));
     }
 
     private void OnDeleteUserClicked()
@@ -170,6 +196,7 @@ public class Manager_LoggedUser : MonoBehaviour
     {
         _userActionUpdate.color = Color.white;
         _userActionUpdate.text = "Utente eliminato con successo!";
+        StartCoroutine(ActionUpdateTextDelay(_userActionUpdate));
     }
 
     private void ShowRegisterPanel()
@@ -182,5 +209,11 @@ public class Manager_LoggedUser : MonoBehaviour
     {
         _loginPanel.SetActive(true);
         _registerPanel.SetActive(false);
+    }
+
+    private IEnumerator ActionUpdateTextDelay(TextMeshProUGUI _userActionUpdate)
+    {
+        yield return new WaitForSeconds(1.5f);
+        _userActionUpdate.text = "";
     }
 }

@@ -424,6 +424,7 @@ GameObject:
   - component: {fileID: 87675085}
   - component: {fileID: 87675084}
   - component: {fileID: 87675083}
+  - component: {fileID: 87675086}
   m_Layer: 5
   m_Name: Username
   m_TagString: Untagged
@@ -590,6 +591,19 @@ CanvasRenderer:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 87675081}
   m_CullTransparentMesh: 1
+--- !u!114 &87675086
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 87675081}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 8b415bc8892e11d49a5a5f66447390b3, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::HoverUI
+  customCursor: {fileID: 2800000, guid: e1cda9b2410f4e741aa57fc2652c99ba, type: 3}
 --- !u!1 &99921844
 GameObject:
   m_ObjectHideFlags: 0
@@ -2192,13 +2206,14 @@ GameObject:
   - component: {fileID: 571783340}
   - component: {fileID: 571783339}
   - component: {fileID: 571783338}
+  - component: {fileID: 571783341}
   m_Layer: 5
   m_Name: ConfermaPassword
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 0
+  m_IsActive: 1
 --- !u!224 &571783337
 RectTransform:
   m_ObjectHideFlags: 0
@@ -2267,8 +2282,8 @@ MonoBehaviour:
   m_VerticalScrollbarEventHandler: {fileID: 0}
   m_LayoutGroup: {fileID: 0}
   m_ScrollSensitivity: 1
-  m_ContentType: 0
-  m_InputType: 0
+  m_ContentType: 7
+  m_InputType: 2
   m_AsteriskChar: 42
   m_KeyboardType: 0
   m_LineType: 0
@@ -2358,6 +2373,19 @@ CanvasRenderer:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 571783336}
   m_CullTransparentMesh: 1
+--- !u!114 &571783341
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 571783336}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 8b415bc8892e11d49a5a5f66447390b3, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::HoverUI
+  customCursor: {fileID: 2800000, guid: e1cda9b2410f4e741aa57fc2652c99ba, type: 3}
 --- !u!1 &584613856
 GameObject:
   m_ObjectHideFlags: 0
@@ -2959,6 +2987,7 @@ GameObject:
   - component: {fileID: 634264917}
   - component: {fileID: 634264916}
   - component: {fileID: 634264918}
+  - component: {fileID: 634264919}
   m_Layer: 5
   m_Name: Password
   m_TagString: Untagged
@@ -3125,6 +3154,19 @@ MonoBehaviour:
   isAlert: 0
   m_InputValidator: {fileID: 0}
   m_ShouldActivateOnSelect: 1
+--- !u!114 &634264919
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 634264914}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 8b415bc8892e11d49a5a5f66447390b3, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::HoverUI
+  customCursor: {fileID: 2800000, guid: e1cda9b2410f4e741aa57fc2652c99ba, type: 3}
 --- !u!1 &658510595
 GameObject:
   m_ObjectHideFlags: 0
@@ -3449,6 +3491,7 @@ GameObject:
   - component: {fileID: 884032074}
   - component: {fileID: 884032073}
   - component: {fileID: 884032075}
+  - component: {fileID: 884032076}
   m_Layer: 5
   m_Name: Username
   m_TagString: Untagged
@@ -3615,6 +3658,19 @@ MonoBehaviour:
   isAlert: 0
   m_InputValidator: {fileID: 0}
   m_ShouldActivateOnSelect: 1
+--- !u!114 &884032076
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 884032071}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 8b415bc8892e11d49a5a5f66447390b3, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::HoverUI
+  customCursor: {fileID: 2800000, guid: e1cda9b2410f4e741aa57fc2652c99ba, type: 3}
 --- !u!1 &896758623
 GameObject:
   m_ObjectHideFlags: 0
@@ -4359,6 +4415,7 @@ GameObject:
   - component: {fileID: 1072944362}
   - component: {fileID: 1072944361}
   - component: {fileID: 1072944363}
+  - component: {fileID: 1072944364}
   m_Layer: 5
   m_Name: Password
   m_TagString: Untagged
@@ -4472,8 +4529,8 @@ MonoBehaviour:
   m_VerticalScrollbarEventHandler: {fileID: 0}
   m_LayoutGroup: {fileID: 0}
   m_ScrollSensitivity: 1
-  m_ContentType: 0
-  m_InputType: 0
+  m_ContentType: 7
+  m_InputType: 2
   m_AsteriskChar: 42
   m_KeyboardType: 0
   m_LineType: 0
@@ -4525,6 +4582,19 @@ MonoBehaviour:
   isAlert: 0
   m_InputValidator: {fileID: 0}
   m_ShouldActivateOnSelect: 1
+--- !u!114 &1072944364
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1072944359}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 8b415bc8892e11d49a5a5f66447390b3, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::HoverUI
+  customCursor: {fileID: 2800000, guid: e1cda9b2410f4e741aa57fc2652c99ba, type: 3}
 --- !u!1 &1086397393
 GameObject:
   m_ObjectHideFlags: 0
@@ -4537,6 +4607,7 @@ GameObject:
   - component: {fileID: 1086397396}
   - component: {fileID: 1086397395}
   - component: {fileID: 1086397397}
+  - component: {fileID: 1086397398}
   m_Layer: 5
   m_Name: NuovaPassword
   m_TagString: Untagged
@@ -4703,6 +4774,19 @@ MonoBehaviour:
   isAlert: 0
   m_InputValidator: {fileID: 0}
   m_ShouldActivateOnSelect: 1
+--- !u!114 &1086397398
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1086397393}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 8b415bc8892e11d49a5a5f66447390b3, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::HoverUI
+  customCursor: {fileID: 2800000, guid: e1cda9b2410f4e741aa57fc2652c99ba, type: 3}
 --- !u!1 &1093837155
 GameObject:
   m_ObjectHideFlags: 0
@@ -5196,6 +5280,8 @@ MonoBehaviour:
   _registerPanel: {fileID: 171774487}
   _registerNicknameField: {fileID: 87675083}
   _registerPasswordField: {fileID: 1180995607}
+  _confirmPasswordField: {fileID: 571783338}
+  _emailField: {fileID: 1751325925}
   _returnToLoginButton: {fileID: 233740752}
   _createUserButton: {fileID: 1043920011}
   _userImage: {fileID: 1315310325}
@@ -5266,6 +5352,7 @@ GameObject:
   - component: {fileID: 1180995609}
   - component: {fileID: 1180995608}
   - component: {fileID: 1180995607}
+  - component: {fileID: 1180995610}
   m_Layer: 5
   m_Name: Password
   m_TagString: Untagged
@@ -5341,8 +5428,8 @@ MonoBehaviour:
   m_VerticalScrollbarEventHandler: {fileID: 0}
   m_LayoutGroup: {fileID: 0}
   m_ScrollSensitivity: 1
-  m_ContentType: 0
-  m_InputType: 0
+  m_ContentType: 7
+  m_InputType: 2
   m_AsteriskChar: 42
   m_KeyboardType: 0
   m_LineType: 0
@@ -5432,6 +5519,19 @@ CanvasRenderer:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1180995605}
   m_CullTransparentMesh: 1
+--- !u!114 &1180995610
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1180995605}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 8b415bc8892e11d49a5a5f66447390b3, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::HoverUI
+  customCursor: {fileID: 2800000, guid: e1cda9b2410f4e741aa57fc2652c99ba, type: 3}
 --- !u!1001 &1223482323
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -5561,6 +5661,7 @@ GameObject:
   - component: {fileID: 1281053176}
   - component: {fileID: 1281053175}
   - component: {fileID: 1281053177}
+  - component: {fileID: 1281053178}
   m_Layer: 5
   m_Name: Username
   m_TagString: Untagged
@@ -5727,6 +5828,19 @@ MonoBehaviour:
   isAlert: 0
   m_InputValidator: {fileID: 0}
   m_ShouldActivateOnSelect: 1
+--- !u!114 &1281053178
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1281053173}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 8b415bc8892e11d49a5a5f66447390b3, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::HoverUI
+  customCursor: {fileID: 2800000, guid: e1cda9b2410f4e741aa57fc2652c99ba, type: 3}
 --- !u!1 &1304476631
 GameObject:
   m_ObjectHideFlags: 0
@@ -8393,13 +8507,14 @@ GameObject:
   - component: {fileID: 1751325927}
   - component: {fileID: 1751325926}
   - component: {fileID: 1751325925}
+  - component: {fileID: 1751325928}
   m_Layer: 5
   m_Name: Email
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 0
+  m_IsActive: 1
 --- !u!224 &1751325924
 RectTransform:
   m_ObjectHideFlags: 0
@@ -8559,6 +8674,19 @@ CanvasRenderer:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1751325923}
   m_CullTransparentMesh: 1
+--- !u!114 &1751325928
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1751325923}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 8b415bc8892e11d49a5a5f66447390b3, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::HoverUI
+  customCursor: {fileID: 2800000, guid: e1cda9b2410f4e741aa57fc2652c99ba, type: 3}
 --- !u!1 &1751997874
 GameObject:
   m_ObjectHideFlags: 0
@@ -9667,7 +9795,7 @@ MonoBehaviour:
   m_OnCullStateChanged:
     m_PersistentCalls:
       m_Calls: []
-  m_text: Messaggi
+  m_text: 
   m_isRightToLeft: 0
   m_fontAsset: {fileID: 11400000, guid: ced152b102a106c4a9ff29981170307d, type: 2}
   m_sharedMaterial: {fileID: 6047618322513811680, guid: ced152b102a106c4a9ff29981170307d, type: 2}
@@ -10101,6 +10229,7 @@ GameObject:
   - component: {fileID: 1997607267}
   - component: {fileID: 1997607266}
   - component: {fileID: 1997607268}
+  - component: {fileID: 1997607269}
   m_Layer: 5
   m_Name: NuovoUsername
   m_TagString: Untagged
@@ -10267,6 +10396,19 @@ MonoBehaviour:
   isAlert: 0
   m_InputValidator: {fileID: 0}
   m_ShouldActivateOnSelect: 1
+--- !u!114 &1997607269
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1997607264}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 8b415bc8892e11d49a5a5f66447390b3, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::HoverUI
+  customCursor: {fileID: 2800000, guid: e1cda9b2410f4e741aa57fc2652c99ba, type: 3}
 --- !u!1 &2031482192
 GameObject:
   m_ObjectHideFlags: 0
