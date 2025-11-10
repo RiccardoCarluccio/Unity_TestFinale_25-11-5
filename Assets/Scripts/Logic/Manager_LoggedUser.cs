@@ -1,5 +1,7 @@
+using System.Collections;
 using TMPro;
 using UnityEngine;
+using UnityEngine.SceneManagement;
 using UnityEngine.UI;
 
 public class Manager_LoggedUser : MonoBehaviour
@@ -73,6 +75,7 @@ public class Manager_LoggedUser : MonoBehaviour
     {
         _userActionUpdate.color = Color.red;
         _userActionUpdate.text = "Error";
+        StartCoroutine(ActionUpdateTextDelay(_userActionUpdate));
 
         if (enableDebugLogs)
             Debug.LogError(message);
@@ -90,6 +93,7 @@ public class Manager_LoggedUser : MonoBehaviour
         _user = user;
         _userActionUpdate.color = Color.white;
         _userActionUpdate.text = "Login effettuato con successo!";
+        StartCoroutine(ActionUpdateTextDelay(_userActionUpdate));
 
         if (enableDebugLogs)
             Debug.Log($"Logged user: {user.nickname}");
@@ -110,6 +114,7 @@ public class Manager_LoggedUser : MonoBehaviour
         }
 
         _userManager.LoadUserByNicknameAndPassword(nickname, password);
+        SceneManager.LoadScene("Scene_MainMenu");
     }
 
     private void OnDisconnectButtonClicked()
@@ -120,6 +125,7 @@ public class Manager_LoggedUser : MonoBehaviour
 
         _userActionUpdate.color = Color.white;
         _userActionUpdate.text = "Disconnessione effettuata con successo!";
+        StartCoroutine(ActionUpdateTextDelay(_userActionUpdate));
     }
 
     private void OnRegisterButtonClicked()
@@ -143,13 +149,14 @@ public class Manager_LoggedUser : MonoBehaviour
             return;
         }
 
-        _userManager.CreateUser(nickname, password);        
+        _userManager.CreateUser(nickname, password);
     }
 
     private void UserCreated(User user)
     {
         _userActionUpdate.color = Color.white;
         _userActionUpdate.text = "Utente creato con successo!";
+        StartCoroutine(ActionUpdateTextDelay(_userActionUpdate));
     }
 
     private void OnDeleteUserClicked()
@@ -170,6 +177,7 @@ public class Manager_LoggedUser : MonoBehaviour
     {
         _userActionUpdate.color = Color.white;
         _userActionUpdate.text = "Utente eliminato con successo!";
+        StartCoroutine(ActionUpdateTextDelay(_userActionUpdate));
     }
 
     private void ShowRegisterPanel()
@@ -182,5 +190,11 @@ public class Manager_LoggedUser : MonoBehaviour
     {
         _loginPanel.SetActive(true);
         _registerPanel.SetActive(false);
+    }
+
+    private IEnumerator ActionUpdateTextDelay(TextMeshProUGUI _userActionUpdate)
+    {
+        yield return new WaitForSeconds(1.5f);
+        _userActionUpdate.text = "";
     }
 }
