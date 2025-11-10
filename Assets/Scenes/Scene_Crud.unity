@@ -419,7 +419,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: e19747de3f5aca642ab2be37e372fb86, type: 3}
   m_Name: 
   m_EditorClassIdentifier: UnityEngine.UI::UnityEngine.UI.Outline
-  m_EffectColor: {r: 0.10196079, g: 0.12941177, b: 0.32156864, a: 1}
+  m_EffectColor: {r: 0.06666667, g: 0.4862745, b: 0.7372549, a: 0.40392157}
   m_EffectDistance: {x: 20, y: 0}
   m_UseGraphicAlpha: 1
 --- !u!114 &91749140
@@ -435,7 +435,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: UnityEngine.UI::UnityEngine.UI.Image
   m_Material: {fileID: 0}
-  m_Color: {r: 0.61960787, g: 0.60784316, b: 0.81568635, a: 0.11764706}
+  m_Color: {r: 0.06666667, g: 0.4862745, b: 0.65882355, a: 0.3882353}
   m_RaycastTarget: 1
   m_RaycastPadding: {x: 0, y: 0, z: 0, w: 0}
   m_Maskable: 1
@@ -3373,7 +3373,7 @@ MonoBehaviour:
   clickScale: 0.95
   animationSpeed: 10
   animateColor: 1
-  hoverColor: {r: 1, g: 1, b: 1, a: 0.77254903}
+  hoverColor: {r: 1, g: 1, b: 1, a: 1}
   rotateOnHover: 0
   rotationAmount: 5
 --- !u!114 &1134518232
