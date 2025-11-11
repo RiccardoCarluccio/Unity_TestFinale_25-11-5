@@ -260,22 +260,26 @@ public class Manager_Progression : MonoBehaviour
             {
                 var categoryName = chosenScene.ToString().Replace("Scene_", "");
 
-                if (Enum.TryParse(categoryName, true, out Certificates certificate))        //"true" makes the method case insensitive
-                {
-                    _userManager.UpdateCertificates(LoggedUser.Instance.User.nickname, certificate);
-                }
-                else
-                {
-                    if (enableDebugLogs)
-                        Debug.LogWarning($"No certificate found for category name: {categoryName}");
-                }
+                // if (Enum.TryParse(categoryName, true, out Certificates certificate))        //"true" makes the method case insensitive
+                // {
+                //     _userManager.UpdateCertificates(LoggedUser.Instance.User.nickname, certificate);
+                // }
+                // else
+                // {
+                //     if (enableDebugLogs)
+                //         Debug.LogWarning($"No certificate found for category name: {categoryName}");
+                // }
+
+                
+
+                // _userManager.UpdateCertificates(user);
             }
 
             SceneManager.LoadScene("Scene_End");
             yield break;
         }
 
-        
+
         _questionCounterText.text = $"Domanda: {_questionCounter}/{_totalQuestions}";
         ResetButton();
         RandomizeQuestion();

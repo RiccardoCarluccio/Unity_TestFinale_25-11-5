@@ -22,4 +22,9 @@ public class LoggedUser : MonoBehaviour
         else
             Destroy(gameObject);
     }
+
+    public void Logout()
+    {
+        User = null;
+    }
 }
