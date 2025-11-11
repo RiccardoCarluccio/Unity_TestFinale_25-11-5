@@ -1,4 +1,3 @@
-using System;
 using System.Collections;
 using TMPro;
 using UnityEngine;
@@ -55,7 +54,7 @@ public class DashboardUser : MonoBehaviour
         {
             if (enableDebugLogs)
                 Debug.LogWarning("Nessun utente loggato trovato");
-            
+
             _nickname.text = "Ospite";
             return;
         }
@@ -93,7 +92,7 @@ public class DashboardUser : MonoBehaviour
     private void UpdateCertificatesDisplay()
     {
         User currentUser = LoggedUser.Instance.User;
-        
+
         // Ottieni lo stato dei certificati (potrebbero essere null se non ancora inizializzati)
         CertificatesData userCertificates = currentUser.certificates;
 
@@ -119,7 +118,7 @@ public class DashboardUser : MonoBehaviour
     private bool HasCertificate(Certificates certificate)
     {
         User currentUser = LoggedUser.Instance.User;
-        
+
         // Se i certificati non sono stati inizializzati, ritorna false
         if (currentUser.certificates == null)
         {
@@ -127,7 +126,7 @@ public class DashboardUser : MonoBehaviour
                 Debug.LogWarning("Certificati non inizializzati per l'utente");
             return false;
         }
-        
+
         return currentUser.certificates.HasCertificate(certificate);
     }
 

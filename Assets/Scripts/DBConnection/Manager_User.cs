@@ -153,11 +153,6 @@ public class Manager_User : MonoBehaviour
         StartCoroutine(DeleteUserCoroutine(user));
     }
 
-    public void RefreshUserData(string nickname)
-    {
-        StartCoroutine(GetUserByNicknameCoroutine(nickname));
-    }
-
     public void UpdateCertificates(User user)
     {
         StartCoroutine(UpdateCertificatesCoroutine(user));
@@ -313,96 +308,6 @@ public class Manager_User : MonoBehaviour
             else
             {
                 ConnectionHelper.HandleRequestError(request, $"Creating user {user.nickname}", enableDebugLogs, OnError);
-            }
-        }
-    }
-
-    private IEnumerator GetUserByNicknameCoroutine(string nickname)
-{
-    if (enableDebugLogs)
-        Debug.Log($"Refreshing user data for: {nickname}");
-
-    using (UnityWebRequest request = UnityWebRequest.Get($"{baseUrl}/{nickname}"))
-    {
-        yield return request.SendWebRequest();
-
-        if (request.result == UnityWebRequest.Result.Success)
-        {
-            try
-            {
-                string jsonResponse = request.downloadHandler.text;
-                User updatedUser = JsonUtility.FromJson<User>(jsonResponse);
-
-                if (enableDebugLogs)
-                    Debug.Log($"User data refreshed: {updatedUser.nickname}");
-
-                // Aggiorna l'utente loggato
-                if (LoggedUser.Instance != null)
-                {
-                    LoggedUser.Instance.User = updatedUser;
-                }
-
-                OnUserLoaded?.Invoke(updatedUser);
-            }
-            catch (Exception e)
-            {
-                string error = $"Error parsing user data: {e.Message}";
-                if (enableDebugLogs)
-                    Debug.LogError(error);
-                OnError?.Invoke(error);
-            }
-        }
-        else
-        {
-            ConnectionHelper.HandleRequestError(request, $"Refreshing user data for: {nickname}", enableDebugLogs, OnError);
-        }
-    }
-}
-
-    private IEnumerator GetCertificatesCoroutine(User user)
-    {
-        if (enableDebugLogs)
-            Debug.Log($"Getting certificates for user: {user.nickname}");
-
-        using (UnityWebRequest request = UnityWebRequest.Get($"{baseUrl}/certificates/{user.nickname}"))
-        {
-            request.downloadHandler = new DownloadHandlerBuffer();
-            request.SetRequestHeader("Content-Type", "application/json");
-            yield return request.SendWebRequest();
-
-            if (request.result == UnityWebRequest.Result.Success)
-            {
-                try
-                {
-                    string jsonResponse = request.downloadHandler.text;
-
-                    if (jsonResponse.Contains("error"))
-                    {
-                        if (enableDebugLogs)
-                            Debug.LogError($"Server error: {jsonResponse}");
-
-                        OnError?.Invoke("User with same nickname already exists");
-                        yield break;
-                    }
-
-                    User updatedUser = JsonUtility.FromJson<User>(jsonResponse);
-
-                    if (enableDebugLogs)
-                        Debug.Log($"Certificates loaded for user: {updatedUser.nickname}");
-
-                    OnCertificatesLoaded?.Invoke(updatedUser);
-                }
-                catch (Exception e)
-                {
-                    string error = $"Error getting certificates: {e.Message}";
-                    if (enableDebugLogs)
-                        Debug.LogError(error);
-                    OnError?.Invoke(error);
-                }
-            }
-            else
-            {
-                ConnectionHelper.HandleRequestError(request, $"Getting certificates for user: {user.nickname}", enableDebugLogs, OnError);
             }
         }
     }
