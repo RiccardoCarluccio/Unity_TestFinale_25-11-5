@@ -170,14 +170,12 @@ public class Manager_Progression : MonoBehaviour
     {
         if (chosenAnswer == quizItem.correct_answer)          //change column to 'correct_answer'
         {
-            //Add button style in case of correct answer
             OnCorrectAnswerClicked(clickedButton);
             if (enableDebugLogs)
                 Debug.Log($"Correct answer. chosenAnswer: {chosenAnswer}, correct_answer: {quizItem.correct_answer}");
         }
         else
         {
-            //Add button style in case of wrong answer
             OnWrongAnswerClicked();
             if (enableDebugLogs)
                 Debug.Log($"Wrong answer. chosenAnswer: {chosenAnswer}, correct_answer: {quizItem.correct_answer}");
@@ -229,7 +227,6 @@ public class Manager_Progression : MonoBehaviour
 
         _panelManager.ShowQuestionPanel();
         StartCoroutine(NewQuestionDelay());
-
     }
 
     /// <summary>
@@ -274,7 +271,6 @@ public class Manager_Progression : MonoBehaviour
             SceneManager.LoadScene("Scene_End");
             yield break;
         }
-
 
         _questionCounterText.text = $"Domanda: {_questionCounter}/{_totalQuestions}";
         ResetButton();

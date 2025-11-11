@@ -11,7 +11,7 @@ public class User
     public string nickname;
     public string password;
     public string email;
-    public CertificatesData certificates;
+    public Certificates certificates;
 
     public User(string nickname, string password)
     {
@@ -29,6 +29,7 @@ public class User
     public User(string nickname, Certificates certificate)
     {
         this.nickname = nickname;
+        this.certificates = certificate;
     }
 }
 
@@ -38,69 +39,6 @@ public class UserResponse
     public string error;
     public string message;
     public string details;
-}
-
-[Serializable]
-public class CertificatesData
-{
-    public bool sql;
-    public bool surf;
-    public bool videogames;
-
-    public CertificatesData()
-    {
-        sql = false;
-        surf = false;
-        videogames = false;
-    }
-
-    /// <summary>
-    /// Verifica se un certificato specifico è completato
-    /// </summary>
-    public bool HasCertificate(Certificates certificate)
-    {
-        switch (certificate)
-        {
-            case Certificates.Sql:
-                return sql;
-            case Certificates.Surf:
-                return surf;
-            case Certificates.Videogames:
-                return videogames;
-            default:
-                return false;
-        }
-    }
-
-    /// <summary>
-    /// Conta quanti certificati sono completati
-    /// </summary>
-    public int GetCompletedCount()
-    {
-        int count = 0;
-        if (sql) count++;
-        if (surf) count++;
-        if (videogames) count++;
-        return count;
-    }
-
-    /// <summary>
-    /// Converte l'enum Certificates nel nome del campo corretto
-    /// </summary>
-    public static string CertificateToFieldName(Certificates certificate)
-    {
-        switch (certificate)
-        {
-            case Certificates.Sql:
-                return "sql";
-            case Certificates.Surf:
-                return "surf";
-            case Certificates.Videogames:
-                return "videogames";
-            default:
-                return "";
-        }
-    }
 }
 
 //Wrapper in case of an admin retrieving all the users with a GetAllUsers()
