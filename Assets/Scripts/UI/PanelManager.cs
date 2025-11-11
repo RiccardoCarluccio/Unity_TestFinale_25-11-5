@@ -2,14 +2,10 @@ using UnityEngine;
 using System.Collections;
 
 public class PanelManager : MonoBehaviour
-
-
 {
-
     [Header("Pannelli")]
     public GameObject questionPanel;
     public GameObject wrongAnswerPanel;
-    public GameObject endPanel;
 
     void Start()
     {
@@ -31,13 +27,6 @@ public class PanelManager : MonoBehaviour
         wrongAnswerPanel.SetActive(true);
     }
 
-    // Mostra il pannello di fine, nasconde gli altri
-    public void ShowEndPanel()
-    {
-        questionPanel.SetActive(false);
-        endPanel.SetActive(true);
-    }
-
     public void ShowWrongAnswerPanelWithFade()
     {
         StartCoroutine(FadeTransition(questionPanel, wrongAnswerPanel));
@@ -46,11 +35,6 @@ public class PanelManager : MonoBehaviour
     public void ShowQuestionPanelWithFade()
     {
         StartCoroutine(FadeTransition(wrongAnswerPanel, questionPanel));
-    }
-
-    public void ShowEndPanelWithFade()
-    {
-        StartCoroutine(FadeTransition(questionPanel, endPanel));
     }
 
     IEnumerator FadeTransition(GameObject fromPanel, GameObject toPanel)
