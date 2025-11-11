@@ -116,7 +116,6 @@ public class Manager_User : MonoBehaviour
     public UnityAction<User> OnUserDeleted;
     public UnityAction<User> OnUserUpdated;
     public UnityAction<User> OnCertificateUpdated;
-    public UnityAction<User> OnCertificatesLoaded;
     public UnityAction<string> OnError;
 
     [Header("Debug")]
@@ -153,8 +152,9 @@ public class Manager_User : MonoBehaviour
         StartCoroutine(DeleteUserCoroutine(user));
     }
 
-    public void UpdateCertificates(User user)
+    public void UpdateCertificates(string nickname, Certificates certificate)
     {
+        User user = new User(nickname, certificate);
         StartCoroutine(UpdateCertificatesCoroutine(user));
     }
 
@@ -317,11 +317,10 @@ public class Manager_User : MonoBehaviour
         if (enableDebugLogs)
             Debug.Log($"Updating certificate for user: {user.nickname}");
 
-        // string jsonBody = $"{{\"nickname\":\"{user.nickname}\",\"certificates\":\"{user.certificates.ToString().ToLower()}\"}}";
-        string jsonBody = JsonUtility.ToJson(user);
+        string jsonBody = $"{{\"nickname\":\"{user.nickname}\",\"certificates\":\"{user.certificates.ToString().ToLower()}\"}}";
         byte[] bodyRaw = System.Text.Encoding.UTF8.GetBytes(jsonBody);
 
-        using (UnityWebRequest request = UnityWebRequest.Put($"{baseUrl}/update-certificate", jsonBody))
+        using (UnityWebRequest request = new UnityWebRequest($"{baseUrl}/update-certificate", "PATCH"))
         {
             request.uploadHandler = new UploadHandlerRaw(bodyRaw);
             request.downloadHandler = new DownloadHandlerBuffer();
