@@ -33,6 +33,16 @@ app.get('/api/quiz_items/:category_id', async (req, res) => {
     }
 });
 
+app.get('api/users/certificates/:nickname', async (req, res) => {
+    try {
+        const [certificates] = await db.query('SELECT certificates FROM users WHERE nickname = ?', [req.params.nickname]);
+        res.json(certificates);
+    } catch (error) {
+        console.error('Error fetching certificates:', error);
+        res.status(500).json({ error: 'Error fetching certificates' });
+    }
+})
+
 // User endpoints
 app.post('/api/users/login', async (req, res) => {      //choosen POST instead of GET to not show the password in the url
     try {
