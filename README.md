@@ -14,20 +14,22 @@ Ad accompagnare l’utente c’è una figura speciale: Gerry Scotti in versione carto
 **Architettura scalabile e flessibile**\
 Il codice del Serious Game Quiz è stato sviluppato con una struttura modulare e scalabile, che rende il progetto facilmente espandibile nel tempo.
 
-È possibile:
+**È possibile:**
 - Aggiungere nuove categorie tematiche e quiz personalizzati.
 - Creare diversi ruoli e privilegi utente (es. giocatore, creatore di contenuti, amministratore).
 - Integrare nuove funzionalità di rete o statistiche, mantenendo la stabilità del sistema.
+- 
 
 Il database MySQL è alimentato tramite query SQL dinamiche che permettono di popolare rapidamente le tabelle con domande, risposte, e categorie, garantendo flessibilità nella gestione dei dati.
 
-Tecnologie utilizzate:
+**Tecnologie utilizzate:**
 - Unity: sviluppo dell’ambiente interattivo e gestione delle scene.
 - C#: logica del gameplay e collegamento ai sistemi esterni.
 - MySQL: archiviazione e modellazione dati.
 - Node.js e Express: backend di supporto e gestione delle comunicazioni tra database e applicazione.
+- 
 
-Team di sviluppo:\
+**Team di sviluppo:**\
 Riccardo – Back-end logic, database management e architettura dati.
 Marco – Funzionalità tecniche, script chiave e ottimizzazione del sistema.
 Sergio – UI design, interazioni visive, animazioni e user experience.\
@@ -35,7 +37,7 @@ Sergio – UI design, interazioni visive, animazioni e user experience.\
 **Obiettivo**\
 Promuovere l’apprendimento attivo attraverso un’esperienza interattiva che unisce divertimento, curiosità e crescita personale. Il Serious Game Quiz vuole rendere lo studio un’esperienza naturale e stimolante, avvicinando le persone alla conoscenza con il linguaggio del gioco.
 
-Contatti e link utili:\
+**Contatti e link utili:**\
 Riccardo: [GitHub](https://github.com/RiccardoCarluccio) | [LinkedIn](https://www.linkedin.com/in/riccardo-carluccio/)\
 Marco: [GitHub](https://github.com/MarcoTassone) | [LinkedIn](https://www.linkedin.com/in/marco-tassone-233643218/)\
 Sergio: [GitHub](https://github.com/SergioScar9) | [LinkedIn](https://www.linkedin.com/in/sergio-scardigno-75a671372/)
