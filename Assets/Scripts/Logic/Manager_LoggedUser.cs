@@ -24,9 +24,6 @@ public class Manager_LoggedUser : MonoBehaviour
     [Header("User Panel")]
     [SerializeField] private Image _userImage;
     [SerializeField] private TextMeshProUGUI _nicknameText;
-    [SerializeField] private Button _disconnectButton;
-
-    private User _user;
 
     [Header("Debug")]
     public bool enableDebugLogs = true;
@@ -36,7 +33,6 @@ public class Manager_LoggedUser : MonoBehaviour
         if (_instance == null)
         {
             _instance = this;
-            DontDestroyOnLoad(gameObject);
         }
         else
             Destroy(gameObject);
@@ -66,7 +62,6 @@ public class Manager_LoggedUser : MonoBehaviour
         _showRegisterPanel.onClick.AddListener(OnRegisterButtonClicked);
         _returnToLoginButton.onClick.AddListener(OnRegisterPanelLoginButtonClicked);
 
-        _disconnectButton.onClick.AddListener(OnDisconnectButtonClicked);
         _userImage.color = Color.red;
         _nicknameText.text = "Ospite";
     }
@@ -90,7 +85,14 @@ public class Manager_LoggedUser : MonoBehaviour
             return;
         }
 
-        _user = user;
+        if (LoggedUser.Instance == null)
+        {
+            if (enableDebugLogs)
+                Debug.LogError("LoggedUser.Instance is null");
+            return;
+        }
+
+        LoggedUser.Instance.User = user;
         _userActionUpdate.color = Color.white;
         _userActionUpdate.text = "Login effettuato con successo!";
         StartCoroutine(ActionUpdateTextDelay(_userActionUpdate));
@@ -100,6 +102,8 @@ public class Manager_LoggedUser : MonoBehaviour
 
         _userImage.color = Color.green;
         _nicknameText.text = user.nickname;
+
+        SceneManager.LoadScene("Scene_MainMenu");
     }
 
     private void OnLoginButtonClicked()
@@ -114,18 +118,6 @@ public class Manager_LoggedUser : MonoBehaviour
         }
 
         _userManager.LoadUserByNicknameAndPassword(nickname, password);
-        SceneManager.LoadScene("Scene_MainMenu");
-    }
-
-    private void OnDisconnectButtonClicked()
-    {
-        _user = null;
-        _userImage.color = Color.red;
-        _nicknameText.text = "Ospite";
-
-        _userActionUpdate.color = Color.white;
-        _userActionUpdate.text = "Disconnessione effettuata con successo!";
-        StartCoroutine(ActionUpdateTextDelay(_userActionUpdate));
     }
 
     private void OnRegisterButtonClicked()

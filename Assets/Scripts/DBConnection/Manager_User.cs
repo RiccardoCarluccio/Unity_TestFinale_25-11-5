@@ -26,11 +26,10 @@ public class User
         this.email = email;
     }
 
-    public User(string nickname, string password, Certificates certificates)
+    public User(string nickname, Certificates certificate)
     {
         this.nickname = nickname;
-        this.password = password;
-        this.certificates = certificates;
+        this.certificates = certificate;
     }
 }
 
@@ -54,6 +53,7 @@ public class Manager_User : MonoBehaviour
     public UnityAction<User> OnUserCreated;
     public UnityAction<User> OnUserDeleted;
     public UnityAction<User> OnUserUpdated;
+    public UnityAction<User> OnCertificateUpdated;
     public UnityAction<string> OnError;
 
     [Header("Debug")]
@@ -88,6 +88,12 @@ public class Manager_User : MonoBehaviour
     {
         User user = new User(nickname, password);
         StartCoroutine(DeleteUserCoroutine(user));
+    }
+
+    public void UpdateCertificates(string nickname, Certificates certificate)
+    {
+        User user = new User(nickname, certificate);
+        StartCoroutine(UpdateCertificatesCoroutine(user));
     }
 
     #endregion
@@ -240,6 +246,36 @@ public class Manager_User : MonoBehaviour
             else
             {
                 ConnectionHelper.HandleRequestError(request, $"Creating user {user.nickname}", enableDebugLogs, OnError);
+            }
+        }
+    }
+
+    private IEnumerator UpdateCertificatesCoroutine(User user)
+    {
+        if (enableDebugLogs)
+            Debug.Log($"Updating certificate for user: {user.nickname}");
+
+        string jsonBody = $"{{\"nickname\":\"{user.nickname}\",\"certificates\":\"{user.certificates.ToString().ToLower()}\"}}";
+        byte[] bodyRaw = System.Text.Encoding.UTF8.GetBytes(jsonBody);
+
+        using (UnityWebRequest request = new UnityWebRequest($"{baseUrl}/update-certificate", "PATCH"))
+        {
+            request.uploadHandler = new UploadHandlerRaw(bodyRaw);
+            request.downloadHandler = new DownloadHandlerBuffer();
+
+            request.SetRequestHeader("Content-Type", "application/json");
+            yield return request.SendWebRequest();
+
+            if (request.result == UnityWebRequest.Result.Success)
+            {
+                if (enableDebugLogs)
+                    Debug.Log($"Certificate updated successfully for user: {user.nickname}");
+
+                OnCertificateUpdated?.Invoke(user);
+            }
+            else
+            {
+                ConnectionHelper.HandleRequestError(request, $"Updating certificate for user: {user.nickname}", enableDebugLogs, OnError);
             }
         }
     }

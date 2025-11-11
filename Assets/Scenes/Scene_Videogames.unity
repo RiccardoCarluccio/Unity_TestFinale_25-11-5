@@ -892,6 +892,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::Manager_Progression
   _managerCrud: {fileID: 816654106}
+  _userManager: {fileID: 510630476}
   _answer1Button: {fileID: 1134518226}
   _answer2Button: {fileID: 81267253}
   _answer3Button: {fileID: 171893274}
@@ -900,6 +901,8 @@ MonoBehaviour:
   _explanationText: {fileID: 689548732}
   _panelManager: {fileID: 1771018151}
   enableDebugLogs: 1
+  IsTesting: 1
+  numOfQuestions: 1
 --- !u!4 &339892536
 Transform:
   m_ObjectHideFlags: 0
@@ -1282,6 +1285,52 @@ MonoBehaviour:
   m_EffectColor: {r: 0, g: 0, b: 0, a: 0.5}
   m_EffectDistance: {x: 2, y: -2}
   m_UseGraphicAlpha: 1
+--- !u!1 &510630475
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 510630477}
+  - component: {fileID: 510630476}
+  m_Layer: 0
+  m_Name: UserManager
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!114 &510630476
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 510630475}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 38591dd86509e9943ab3757e0f5769e5, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::Manager_User
+  baseUrl: http://localhost:8080/api/users
+  enableDebugLogs: 1
+--- !u!4 &510630477
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 510630475}
+  serializedVersion: 2
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 526.096, y: 287.20374, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 0}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &536824789
 GameObject:
   m_ObjectHideFlags: 0
@@ -4472,6 +4521,7 @@ SceneRoots:
   - {fileID: 1234828661}
   - {fileID: 816654107}
   - {fileID: 339892536}
+  - {fileID: 510630477}
   - {fileID: 1771018152}
   - {fileID: 119402834}
   - {fileID: 1123764882}

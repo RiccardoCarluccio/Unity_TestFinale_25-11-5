@@ -5,7 +5,7 @@ using UnityEngine.UI;
 
 public class SceneLoader : MonoBehaviour
 {
-    [SerializeField] private Button _crudButton;
+    [SerializeField] private Button _sqlButton;
     [SerializeField] private Button _surfButton;
     [SerializeField] private Button _gamesButton;
 
@@ -14,14 +14,14 @@ public class SceneLoader : MonoBehaviour
 
     private void OnEnable()
     {
-        _crudButton.onClick.AddListener(() => LoadChosenScene(ChosenScene.Scene_Crud));
+        _sqlButton.onClick.AddListener(() => LoadChosenScene(ChosenScene.Scene_Sql));
         _surfButton.onClick.AddListener(() => LoadChosenScene(ChosenScene.Scene_Surf));
         _gamesButton.onClick.AddListener(() => LoadChosenScene(ChosenScene.Scene_Videogames));
     }
 
     private void OnDisable()
     {
-        _crudButton.onClick.RemoveAllListeners();
+        _sqlButton.onClick.RemoveAllListeners();
         _surfButton.onClick.RemoveAllListeners();
         _gamesButton.onClick.RemoveAllListeners();
     }
