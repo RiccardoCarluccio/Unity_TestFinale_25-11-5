@@ -14,9 +14,9 @@ public class Manager_Progression : MonoBehaviour
 
     [SerializeField] private Manager_CRUD _managerCrud;
     [SerializeField] private Manager_User _userManager;
+    [SerializeField] private PanelManager _panelManager;
     [SerializeField] private Button _answer1Button, _answer2Button, _answer3Button;
     [SerializeField] private TextMeshProUGUI _questionText, _questionCounterText, _explanationText;
-    [SerializeField] private PanelManager _panelManager;
 
     private int _category_id;
     private List<QuizItem> _quizItems = new();
@@ -107,7 +107,7 @@ public class Manager_Progression : MonoBehaviour
     {
         if (_questionCounter == 0)
         {
-            _panelManager.ShowEndPanel();
+            SceneManager.LoadScene("Scene_End");
             return;
         }
 
@@ -241,7 +241,6 @@ public class Manager_Progression : MonoBehaviour
         yield return new WaitForSeconds(1f);
 
         _questionCounter++;
-        // _currentQuizItemIndex++;
 
         if (_questionCounter > _totalQuestions)
         {
@@ -252,7 +251,7 @@ public class Manager_Progression : MonoBehaviour
             {
                 if (enableDebugLogs)
                     Debug.LogError("LoggedUser.Instance or User is null!");
-                _panelManager.ShowEndPanel();
+                SceneManager.LoadScene("Scene_Login");
                 yield break;
             }
 
@@ -276,7 +275,7 @@ public class Manager_Progression : MonoBehaviour
                 // _userManager.UpdateCertificates(user);
             }
 
-            _panelManager.ShowEndPanel();
+            SceneManager.LoadScene("Scene_End");
             yield break;
         }
 
