@@ -1,7 +1,6 @@
 using System;
 using System.Collections;
 using TMPro;
-using UnityEditor.SearchService;
 using UnityEngine;
 using UnityEngine.SceneManagement;
 using UnityEngine.UI;
@@ -14,95 +13,231 @@ public class DashboardUser : MonoBehaviour
     [SerializeField] private GameObject _certificatesPanel;
     [SerializeField] private TextMeshProUGUI _nickname;
     [SerializeField] private Button _certificateButton, _logout, _closeCertificatesButton;
-    private Certificates _certificatesText;
+
+    [Header("Certificate UI Elements")]
+    [SerializeField] private GameObject _sqlCertificateIcon;
+    [SerializeField] private GameObject _surfCertificateIcon;
+    [SerializeField] private GameObject _videogamesCertificateIcon;
+    [SerializeField] private TextMeshProUGUI _certificatesStatusText;
+
+    [Header("Colors")]
+    [SerializeField] private Color _completedColor = Color.green;
+    [SerializeField] private Color _notCompletedColor = Color.red;
 
     private bool enableDebugLogs = true;
 
-    public float fadeDuration = 0.3f;
+    private void Start()
+    {
+        // Configura i listener dei pulsanti
+        _certificateButton.onClick.AddListener(OnCertificateButtonClicked);
+        _logout.onClick.AddListener(OnLogoutClicked);
+        _closeCertificatesButton.onClick.AddListener(OnCloseCertificatesClicked);
+
+        // Nascondi il pannello certificati all'inizio
+        _certificatesPanel.SetActive(false);
+
+        // Carica i dati dell'utente loggato
+        LoadUserData();
+    }
 
     private void OnEnable()
     {
-        _userManager.OnCertificatesLoaded += LoadCertificates;
+        // Ricarica i dati ogni volta che la dashboard diventa attiva
+        LoadUserData();
     }
 
-    private void OnDisable()
+    /// <summary>
+    /// Carica i dati dell'utente loggato e aggiorna la UI
+    /// </summary>
+    private void LoadUserData()
     {
-        _userManager.OnUserLoaded -= LoadCertificates;
-    }
-
-    void Start()
-    {
-        _logout.onClick.AddListener(OnLogoutClicked);
-        _certificateButton.onClick.AddListener(OnCertificateClicked);
-
-        _certificatesGroup.alpha = 0;
-        _certificatesPanel.SetActive(false);
-
-        if (_closeCertificatesButton != null)
-        {
-            _closeCertificatesButton.onClick.AddListener(HideCertificatesPanel);
-        }
-    }
-
-    void Awake()
-    {
-        _nickname.text = LoggedUser.Instance.User.nickname;
-    }
-
-    private void OnLogoutClicked()
-    {
-        LoggedUser.Instance.Logout();
-
-        if (enableDebugLogs)
-            Debug.Log("Disconnessione avvenuta con successo!");
-
-        SceneManager.LoadScene("Scene_Login_Register");
-    }
-    
-    private void LoadCertificates(User user)
-    {
-        string nickname = user.nickname;
-        _certificatesText = user.certificates;
-
-        if (string.IsNullOrEmpty(nickname))
+        if (LoggedUser.Instance == null || LoggedUser.Instance.User == null)
         {
             if (enableDebugLogs)
-            {
-                Debug.Log($"No certificates found for user: {nickname}");
-            }
+                Debug.LogWarning("Nessun utente loggato trovato");
+            
+            _nickname.text = "Ospite";
+            return;
+        }
+
+        User currentUser = LoggedUser.Instance.User;
+        _nickname.text = currentUser.nickname;
+
+        if (enableDebugLogs)
+            Debug.Log($"Caricati dati utente: {currentUser.nickname}");
+    }
+
+    /// <summary>
+    /// Chiamato quando si clicca sul pulsante dei certificati
+    /// </summary>
+    private void OnCertificateButtonClicked()
+    {
+        if (LoggedUser.Instance == null || LoggedUser.Instance.User == null)
+        {
+            if (enableDebugLogs)
+                Debug.LogWarning("Nessun utente loggato");
+            return;
+        }
+
+        // Mostra il pannello certificati
+        _certificatesPanel.SetActive(true);
+        StartCoroutine(FadeInPanel(_certificatesGroup));
+
+        // Aggiorna la visualizzazione dei certificati
+        UpdateCertificatesDisplay();
+    }
+
+    /// <summary>
+    /// Aggiorna la visualizzazione dei certificati in base allo stato dell'utente
+    /// </summary>
+    private void UpdateCertificatesDisplay()
+    {
+        User currentUser = LoggedUser.Instance.User;
+        
+        // Ottieni lo stato dei certificati (potrebbero essere null se non ancora inizializzati)
+        CertificatesData userCertificates = currentUser.certificates;
+
+        if (enableDebugLogs)
+        {
+            if (userCertificates != null)
+                Debug.Log($"Certificati utente - SQL: {userCertificates.sql}, Surf: {userCertificates.surf}, Videogames: {userCertificates.videogames}");
+            else
+                Debug.Log("Certificati utente: null");
+        }
+
+        // Aggiorna ogni certificato
+        UpdateCertificateIcon(_sqlCertificateIcon, HasCertificate(Certificates.Sql), "SQL");
+        UpdateCertificateIcon(_surfCertificateIcon, HasCertificate(Certificates.Surf), "Surf");
+        UpdateCertificateIcon(_videogamesCertificateIcon, HasCertificate(Certificates.Videogames), "Videogames");
+
+        // Aggiorna il testo di stato
+        UpdateCertificatesStatusText();
+    }
+    /// <summary>
+    /// Verifica se l'utente ha completato un certificato specifico
+    /// </summary>
+    private bool HasCertificate(Certificates certificate)
+    {
+        User currentUser = LoggedUser.Instance.User;
+        
+        // Se i certificati non sono stati inizializzati, ritorna false
+        if (currentUser.certificates == null)
+        {
+            if (enableDebugLogs)
+                Debug.LogWarning("Certificati non inizializzati per l'utente");
+            return false;
         }
         
-        _userManager.GetCertificates(nickname, _certificatesText);
+        return currentUser.certificates.HasCertificate(certificate);
     }
 
-    private void OnCertificateClicked()
+    /// <summary>
+    /// Aggiorna l'aspetto di un'icona certificato
+    /// </summary>
+    private void UpdateCertificateIcon(GameObject certificateIcon, bool isCompleted, string certificateName)
     {
-        _certificatesPanel.SetActive(true);
-        StartCoroutine(FadeCanvasGroup(_certificatesGroup, 0, 1, fadeDuration));
+        if (certificateIcon == null) return;
+
+        TextMeshProUGUI textColor = certificateIcon.GetComponent<TextMeshProUGUI>();
+        if (textColor != null)
+        {
+            textColor.color = isCompleted ? _completedColor : _notCompletedColor;
+        }
+
+        // Opzionale: aggiungi un tooltip o testo
+        TextMeshProUGUI certificateText = certificateIcon.GetComponentInChildren<TextMeshProUGUI>();
+        if (certificateText != null)
+        {
+            certificateText.text = $"{certificateName}";
+        }
+
+        if (enableDebugLogs)
+            Debug.Log($"Certificato {certificateName}: {(isCompleted ? "Completato" : "Non completato")}");
     }
 
-    private void HideCertificatesPanel()
+    /// <summary>
+    /// Aggiorna il testo di stato generale dei certificati
+    /// </summary>
+    private void UpdateCertificatesStatusText()
     {
-        StartCoroutine(HideAndDeactivate());
+        int completedCount = 0;
+        int totalCertificates = 3;
+
+        if (HasCertificate(Certificates.Sql)) completedCount++;
+        if (HasCertificate(Certificates.Surf)) completedCount++;
+        if (HasCertificate(Certificates.Videogames)) completedCount++;
+
+        if (_certificatesStatusText != null)
+        {
+            _certificatesStatusText.text = $"Certificati completati: {completedCount}/{totalCertificates}";
+        }
     }
 
-    IEnumerator HideAndDeactivate()
+    /// <summary>
+    /// Chiude il pannello dei certificati
+    /// </summary>
+    private void OnCloseCertificatesClicked()
     {
-        yield return FadeCanvasGroup(_certificatesGroup, 1, 0, fadeDuration);
-        _certificatesPanel.SetActive(false);
+        StartCoroutine(FadeOutPanel(_certificatesGroup));
     }
-    
-    IEnumerator FadeCanvasGroup(CanvasGroup cg, float start, float end, float duration)
+
+    /// <summary>
+    /// Gestisce il logout
+    /// </summary>
+    private void OnLogoutClicked()
     {
+        if (LoggedUser.Instance != null)
+        {
+            LoggedUser.Instance.User = null;
+        }
+
+        if (enableDebugLogs)
+            Debug.Log("Utente disconnesso");
+
+        // Torna alla scena di login
+        SceneManager.LoadScene("Scene_Login_Register"); // Modifica con il nome della tua scena di login
+    }
+
+    /// <summary>
+    /// Fade in del pannello certificati
+    /// </summary>
+    private IEnumerator FadeInPanel(CanvasGroup canvasGroup)
+    {
+        float duration = 0.3f;
         float elapsed = 0f;
-        cg.alpha = start;
+
+        canvasGroup.alpha = 0f;
+        canvasGroup.interactable = true;
+        canvasGroup.blocksRaycasts = true;
 
         while (elapsed < duration)
         {
             elapsed += Time.deltaTime;
-            cg.alpha = Mathf.Lerp(start, end, elapsed / duration);
+            canvasGroup.alpha = Mathf.Lerp(0f, 1f, elapsed / duration);
             yield return null;
         }
-        cg.alpha = end;
+
+        canvasGroup.alpha = 1f;
+    }
+
+    /// <summary>
+    /// Fade out del pannello certificati
+    /// </summary>
+    private IEnumerator FadeOutPanel(CanvasGroup canvasGroup)
+    {
+        float duration = 0.3f;
+        float elapsed = 0f;
+
+        while (elapsed < duration)
+        {
+            elapsed += Time.deltaTime;
+            canvasGroup.alpha = Mathf.Lerp(1f, 0f, elapsed / duration);
+            yield return null;
+        }
+
+        canvasGroup.alpha = 0f;
+        canvasGroup.interactable = false;
+        canvasGroup.blocksRaycasts = false;
+        _certificatesPanel.SetActive(false);
     }
 }
