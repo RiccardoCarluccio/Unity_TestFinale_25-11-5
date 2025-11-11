@@ -18,7 +18,7 @@ Il codice del Serious Game Quiz è stato sviluppato con una struttura modulare e 
 - Aggiungere nuove categorie tematiche e quiz personalizzati.
 - Creare diversi ruoli e privilegi utente (es. giocatore, creatore di contenuti, amministratore).
 - Integrare nuove funzionalità di rete o statistiche, mantenendo la stabilità del sistema.
-- 
+ 
 
 Il database MySQL è alimentato tramite query SQL dinamiche che permettono di popolare rapidamente le tabelle con domande, risposte, e categorie, garantendo flessibilità nella gestione dei dati.
 
@@ -27,7 +27,7 @@ Il database MySQL è alimentato tramite query SQL dinamiche che permettono di pop
 - C#: logica del gameplay e collegamento ai sistemi esterni.
 - MySQL: archiviazione e modellazione dati.
 - Node.js e Express: backend di supporto e gestione delle comunicazioni tra database e applicazione.
-- 
+
 
 **Team di sviluppo:**\
 Riccardo – Back-end logic, database management e architettura dati.
