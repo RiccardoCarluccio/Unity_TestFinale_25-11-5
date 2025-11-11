@@ -33,6 +33,54 @@ app.get('/api/quiz_items/:category_id', async (req, res) => {
     }
 });
 
+app.get('/api/users/certificates/:nickname', async (req, res) => {
+    try {
+        const [rows] = await db.query('SELECT certificates FROM users WHERE nickname = ?', [req.params.nickname]);
+
+        if (rows.length === 0)
+            return res.status(404).json({ error: "User not found" });
+
+        res.json(rows[0].certificates);
+    } catch (error) {
+        console.error('Error fetching certificates:', error);
+        res.status(500).json({ error: 'Error fetching certificates' });
+    }
+});
+
+app.get('/api/users/:nickname', async (req, res) => {
+    try {
+        const nickname = req.params.nickname;
+
+        if (!nickname) {
+            return res.status(400).json({ error: 'Nickname is required' });
+        }
+
+        const [rows] = await db.query(
+            'SELECT id, nickname, email, certificates FROM users WHERE nickname = ?',
+            [nickname]
+        );
+
+        if (rows.length === 0) {
+            return res.status(404).json({ error: 'User not found' });
+        }
+
+        // Parse certificates se è una stringa JSON
+        const user = rows[0];
+        if (typeof user.certificates === 'string') {
+            try {
+                user.certificates = JSON.parse(user.certificates);
+            } catch (e) {
+                user.certificates = { sql: false, surf: false, videogames: false };
+            }
+        }
+
+        res.json(user);
+    } catch (error) {
+        console.error('Error fetching user:', error);
+        res.status(500).json({ error: 'Error fetching user' });
+    }
+});
+
 // User endpoints
 app.post('/api/users/login', async (req, res) => {      //choosen POST instead of GET to not show the password in the url
     try {
