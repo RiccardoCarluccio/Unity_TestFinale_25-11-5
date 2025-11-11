@@ -11,7 +11,7 @@ public class User
     public string nickname;
     public string password;
     public string email;
-    public Certificates certificates;
+    public CertificatesData certificates;
 
     public User(string nickname, string password)
     {
@@ -29,7 +29,6 @@ public class User
     public User(string nickname, Certificates certificate)
     {
         this.nickname = nickname;
-        this.certificates = certificate;
     }
 }
 
@@ -39,6 +38,69 @@ public class UserResponse
     public string error;
     public string message;
     public string details;
+}
+
+[Serializable]
+public class CertificatesData
+{
+    public bool sql;
+    public bool surf;
+    public bool videogames;
+
+    public CertificatesData()
+    {
+        sql = false;
+        surf = false;
+        videogames = false;
+    }
+
+    /// <summary>
+    /// Verifica se un certificato specifico è completato
+    /// </summary>
+    public bool HasCertificate(Certificates certificate)
+    {
+        switch (certificate)
+        {
+            case Certificates.Sql:
+                return sql;
+            case Certificates.Surf:
+                return surf;
+            case Certificates.Videogames:
+                return videogames;
+            default:
+                return false;
+        }
+    }
+
+    /// <summary>
+    /// Conta quanti certificati sono completati
+    /// </summary>
+    public int GetCompletedCount()
+    {
+        int count = 0;
+        if (sql) count++;
+        if (surf) count++;
+        if (videogames) count++;
+        return count;
+    }
+
+    /// <summary>
+    /// Converte l'enum Certificates nel nome del campo corretto
+    /// </summary>
+    public static string CertificateToFieldName(Certificates certificate)
+    {
+        switch (certificate)
+        {
+            case Certificates.Sql:
+                return "sql";
+            case Certificates.Surf:
+                return "surf";
+            case Certificates.Videogames:
+                return "videogames";
+            default:
+                return "";
+        }
+    }
 }
 
 //Wrapper in case of an admin retrieving all the users with a GetAllUsers()
@@ -54,6 +116,7 @@ public class Manager_User : MonoBehaviour
     public UnityAction<User> OnUserDeleted;
     public UnityAction<User> OnUserUpdated;
     public UnityAction<User> OnCertificateUpdated;
+    public UnityAction<User> OnCertificatesLoaded;
     public UnityAction<string> OnError;
 
     [Header("Debug")]
@@ -90,9 +153,13 @@ public class Manager_User : MonoBehaviour
         StartCoroutine(DeleteUserCoroutine(user));
     }
 
-    public void UpdateCertificates(string nickname, Certificates certificate)
+    public void RefreshUserData(string nickname)
     {
-        User user = new User(nickname, certificate);
+        StartCoroutine(GetUserByNicknameCoroutine(nickname));
+    }
+
+    public void UpdateCertificates(User user)
+    {
         StartCoroutine(UpdateCertificatesCoroutine(user));
     }
 
@@ -250,15 +317,106 @@ public class Manager_User : MonoBehaviour
         }
     }
 
+    private IEnumerator GetUserByNicknameCoroutine(string nickname)
+{
+    if (enableDebugLogs)
+        Debug.Log($"Refreshing user data for: {nickname}");
+
+    using (UnityWebRequest request = UnityWebRequest.Get($"{baseUrl}/{nickname}"))
+    {
+        yield return request.SendWebRequest();
+
+        if (request.result == UnityWebRequest.Result.Success)
+        {
+            try
+            {
+                string jsonResponse = request.downloadHandler.text;
+                User updatedUser = JsonUtility.FromJson<User>(jsonResponse);
+
+                if (enableDebugLogs)
+                    Debug.Log($"User data refreshed: {updatedUser.nickname}");
+
+                // Aggiorna l'utente loggato
+                if (LoggedUser.Instance != null)
+                {
+                    LoggedUser.Instance.User = updatedUser;
+                }
+
+                OnUserLoaded?.Invoke(updatedUser);
+            }
+            catch (Exception e)
+            {
+                string error = $"Error parsing user data: {e.Message}";
+                if (enableDebugLogs)
+                    Debug.LogError(error);
+                OnError?.Invoke(error);
+            }
+        }
+        else
+        {
+            ConnectionHelper.HandleRequestError(request, $"Refreshing user data for: {nickname}", enableDebugLogs, OnError);
+        }
+    }
+}
+
+    private IEnumerator GetCertificatesCoroutine(User user)
+    {
+        if (enableDebugLogs)
+            Debug.Log($"Getting certificates for user: {user.nickname}");
+
+        using (UnityWebRequest request = UnityWebRequest.Get($"{baseUrl}/certificates/{user.nickname}"))
+        {
+            request.downloadHandler = new DownloadHandlerBuffer();
+            request.SetRequestHeader("Content-Type", "application/json");
+            yield return request.SendWebRequest();
+
+            if (request.result == UnityWebRequest.Result.Success)
+            {
+                try
+                {
+                    string jsonResponse = request.downloadHandler.text;
+
+                    if (jsonResponse.Contains("error"))
+                    {
+                        if (enableDebugLogs)
+                            Debug.LogError($"Server error: {jsonResponse}");
+
+                        OnError?.Invoke("User with same nickname already exists");
+                        yield break;
+                    }
+
+                    User updatedUser = JsonUtility.FromJson<User>(jsonResponse);
+
+                    if (enableDebugLogs)
+                        Debug.Log($"Certificates loaded for user: {updatedUser.nickname}");
+
+                    OnCertificatesLoaded?.Invoke(updatedUser);
+                }
+                catch (Exception e)
+                {
+                    string error = $"Error getting certificates: {e.Message}";
+                    if (enableDebugLogs)
+                        Debug.LogError(error);
+                    OnError?.Invoke(error);
+                }
+            }
+            else
+            {
+                ConnectionHelper.HandleRequestError(request, $"Getting certificates for user: {user.nickname}", enableDebugLogs, OnError);
+            }
+        }
+    }
+
     private IEnumerator UpdateCertificatesCoroutine(User user)
     {
         if (enableDebugLogs)
             Debug.Log($"Updating certificate for user: {user.nickname}");
 
-        string jsonBody = $"{{\"nickname\":\"{user.nickname}\",\"certificates\":\"{user.certificates.ToString().ToLower()}\"}}";
+        // string jsonBody = $"{{\"nickname\":\"{user.nickname}\",\"certificates\":\"{user.certificates.ToString().ToLower()}\"}}";
+        string jsonBody = JsonUtility.ToJson(user);
         byte[] bodyRaw = System.Text.Encoding.UTF8.GetBytes(jsonBody);
 
-        using (UnityWebRequest request = new UnityWebRequest($"{baseUrl}/update-certificate", "PATCH"))
+        using (UnityWebRequest request = UnityWebRequest.Put($"{baseUrl}/update-certificate", jsonBody))
         {
             request.uploadHandler = new UploadHandlerRaw(bodyRaw);
             request.downloadHandler = new DownloadHandlerBuffer();
