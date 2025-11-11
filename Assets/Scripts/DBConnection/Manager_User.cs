@@ -54,6 +54,7 @@ public class Manager_User : MonoBehaviour
     public UnityAction<User> OnUserDeleted;
     public UnityAction<User> OnUserUpdated;
     public UnityAction<User> OnCertificateUpdated;
+    public UnityAction<Certificates> OnCertificatesLoaded;
     public UnityAction<string> OnError;
 
     [Header("Debug")]
@@ -94,6 +95,11 @@ public class Manager_User : MonoBehaviour
     {
         User user = new User(nickname, certificate);
         StartCoroutine(UpdateCertificatesCoroutine(user));
+    }
+
+    public void GetCertificatesByNickname(string nickname)
+    {
+        StartCoroutine(GetCertificatesByNicknameCoroutine(nickname));
     }
 
     #endregion
@@ -276,6 +282,39 @@ public class Manager_User : MonoBehaviour
             else
             {
                 ConnectionHelper.HandleRequestError(request, $"Updating certificate for user: {user.nickname}", enableDebugLogs, OnError);
+            }
+        }
+    }
+
+    private IEnumerator GetCertificatesByNicknameCoroutine(string nickname)
+    {
+        using (UnityWebRequest request = UnityWebRequest.Get($"{baseUrl}/get-certificates/{nickname}"))
+        {
+            yield return request.SendWebRequest();
+
+            if (request.result == UnityWebRequest.Result.Success)
+            {
+                try
+                {
+                    string jsonResponse = request.downloadHandler.text;
+                    Certificates certificates = JsonUtility.FromJson<Certificates>(jsonResponse);
+
+                    if (enableDebugLogs)
+                        Debug.Log($"Certificates loaded for user {nickname}: {jsonResponse}");
+
+                    OnCertificatesLoaded?.Invoke(certificates);
+                }
+                catch (Exception e)
+                {
+                    string error = $"Error parsing certificates: {e.Message}";
+                    if (enableDebugLogs)
+                        Debug.Log(error);
+                    OnError?.Invoke(error);
+                }
+            }
+            else
+            {
+                ConnectionHelper.HandleRequestError(request, $"Retrieving certificates for user: {nickname}", enableDebugLogs, OnError);
             }
         }
     }

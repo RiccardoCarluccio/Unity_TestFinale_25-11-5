@@ -4351,39 +4351,13 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 1542676439}
-  - component: {fileID: 1542676438}
   m_Layer: 0
-  m_Name: DashboardUser
+  m_Name: UserDashboard
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
   m_IsActive: 1
---- !u!114 &1542676438
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1542676437}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: c7d9ad13347f3c14baea4b66f75fee2a, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: Assembly-CSharp::DashboardUser
-  _userManager: {fileID: 1607274201}
-  _certificatesGroup: {fileID: 526218137}
-  _certificatesPanel: {fileID: 526218133}
-  _nickname: {fileID: 1852751078}
-  _certificateButton: {fileID: 371952832}
-  _logout: {fileID: 1063940933}
-  _closeCertificatesButton: {fileID: 612274365}
-  _sqlCertificateIcon: {fileID: 707203902}
-  _surfCertificateIcon: {fileID: 1665319525}
-  _videogamesCertificateIcon: {fileID: 209350902}
-  _certificatesStatusText: {fileID: 685999131}
-  _completedColor: {r: 0, g: 1, b: 0, a: 1}
-  _notCompletedColor: {r: 1, g: 0, b: 0, a: 1}
 --- !u!4 &1542676439
 Transform:
   m_ObjectHideFlags: 0
