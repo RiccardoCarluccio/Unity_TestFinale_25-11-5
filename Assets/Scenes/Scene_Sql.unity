@@ -2055,7 +2055,6 @@ MonoBehaviour:
   m_EditorClassIdentifier: Assembly-CSharp::PanelManager
   questionPanel: {fileID: 990684722}
   wrongAnswerPanel: {fileID: 322298262}
-  endPanel: {fileID: 0}
 --- !u!4 &907424189
 Transform:
   m_ObjectHideFlags: 0
@@ -2295,7 +2294,7 @@ MonoBehaviour:
   m_OnCullStateChanged:
     m_PersistentCalls:
       m_Calls: []
-  m_text: Risposta sbagliata,impariamo insieme.. Leggi il paragrafro qui sotto per
+  m_text: Risposta sbagliata,impariamo insieme... Leggi il paragrafro qui sotto per
     approfondire sull'argomento.
   m_isRightToLeft: 0
   m_fontAsset: {fileID: 11400000, guid: ced152b102a106c4a9ff29981170307d, type: 2}
@@ -4269,14 +4268,16 @@ MonoBehaviour:
   m_EditorClassIdentifier: Assembly-CSharp::Manager_Progression
   _managerCrud: {fileID: 481059899}
   _userManager: {fileID: 237331539}
+  _panelManager: {fileID: 907424188}
   _answer1Button: {fileID: 1134518226}
   _answer2Button: {fileID: 81267253}
   _answer3Button: {fileID: 171893274}
   _questionText: {fileID: 594576503}
   _questionCounterText: {fileID: 1740475324}
   _explanationText: {fileID: 1127796696}
-  _panelManager: {fileID: 907424188}
   enableDebugLogs: 1
+  IsTesting: 1
+  numOfQuestions: 1
 --- !u!4 &2007325266
 Transform:
   m_ObjectHideFlags: 0
@@ -4577,8 +4578,8 @@ SceneRoots:
   - {fileID: 2007325266}
   - {fileID: 237331540}
   - {fileID: 907424189}
+  - {fileID: 70144819}
   - {fileID: 350509166}
   - {fileID: 1123764882}
   - {fileID: 348143872}
   - {fileID: 1087487631}
-  - {fileID: 70144819}

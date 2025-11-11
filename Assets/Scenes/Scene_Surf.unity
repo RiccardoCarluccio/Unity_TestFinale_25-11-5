@@ -1726,6 +1726,52 @@ CanvasRenderer:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 651934030}
   m_CullTransparentMesh: 1
+--- !u!1 &814362042
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 814362044}
+  - component: {fileID: 814362043}
+  m_Layer: 0
+  m_Name: UserManager
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!114 &814362043
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 814362042}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 38591dd86509e9943ab3757e0f5769e5, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::Manager_User
+  baseUrl: http://localhost:8080/api/users
+  enableDebugLogs: 1
+--- !u!4 &814362044
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 814362042}
+  serializedVersion: 2
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 534.8961, y: 289.6137, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 0}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &816652438
 GameObject:
   m_ObjectHideFlags: 0
@@ -3762,14 +3808,17 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::Manager_Progression
   _managerCrud: {fileID: 259479323}
+  _userManager: {fileID: 814362043}
+  _panelManager: {fileID: 1557411510}
   _answer1Button: {fileID: 1134518226}
   _answer2Button: {fileID: 81267253}
   _answer3Button: {fileID: 171893274}
   _questionText: {fileID: 594576503}
   _questionCounterText: {fileID: 1740475324}
   _explanationText: {fileID: 1430821522}
-  _panelManager: {fileID: 1557411510}
   enableDebugLogs: 1
+  IsTesting: 1
+  numOfQuestions: 1
 --- !u!4 &1878220072
 Transform:
   m_ObjectHideFlags: 0
@@ -4472,9 +4521,10 @@ SceneRoots:
   - {fileID: 1379501874}
   - {fileID: 259479324}
   - {fileID: 1878220072}
+  - {fileID: 814362044}
   - {fileID: 1557411511}
+  - {fileID: 229370607}
   - {fileID: 2121860494}
   - {fileID: 1123764882}
   - {fileID: 348143872}
   - {fileID: 891949290}
-  - {fileID: 229370607}
