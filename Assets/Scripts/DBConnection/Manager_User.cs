@@ -11,7 +11,7 @@ public class User
     public string nickname;
     public string password;
     public string email;
-    public CertificatesData certificates;
+    public Certificates certificates;
 
     public User(string nickname, string password)
     {
@@ -29,6 +29,7 @@ public class User
     public User(string nickname, Certificates certificate)
     {
         this.nickname = nickname;
+        this.certificates = certificate;
     }
 }
 
@@ -38,69 +39,6 @@ public class UserResponse
     public string error;
     public string message;
     public string details;
-}
-
-[Serializable]
-public class CertificatesData
-{
-    public bool sql;
-    public bool surf;
-    public bool videogames;
-
-    public CertificatesData()
-    {
-        sql = false;
-        surf = false;
-        videogames = false;
-    }
-
-    /// <summary>
-    /// Verifica se un certificato specifico è completato
-    /// </summary>
-    public bool HasCertificate(Certificates certificate)
-    {
-        switch (certificate)
-        {
-            case Certificates.Sql:
-                return sql;
-            case Certificates.Surf:
-                return surf;
-            case Certificates.Videogames:
-                return videogames;
-            default:
-                return false;
-        }
-    }
-
-    /// <summary>
-    /// Conta quanti certificati sono completati
-    /// </summary>
-    public int GetCompletedCount()
-    {
-        int count = 0;
-        if (sql) count++;
-        if (surf) count++;
-        if (videogames) count++;
-        return count;
-    }
-
-    /// <summary>
-    /// Converte l'enum Certificates nel nome del campo corretto
-    /// </summary>
-    public static string CertificateToFieldName(Certificates certificate)
-    {
-        switch (certificate)
-        {
-            case Certificates.Sql:
-                return "sql";
-            case Certificates.Surf:
-                return "surf";
-            case Certificates.Videogames:
-                return "videogames";
-            default:
-                return "";
-        }
-    }
 }
 
 //Wrapper in case of an admin retrieving all the users with a GetAllUsers()
@@ -116,6 +54,7 @@ public class Manager_User : MonoBehaviour
     public UnityAction<User> OnUserDeleted;
     public UnityAction<User> OnUserUpdated;
     public UnityAction<User> OnCertificateUpdated;
+    public UnityAction<CertificatesAsObjects> OnCertificatesLoaded;
     public UnityAction<string> OnError;
 
     [Header("Debug")]
@@ -156,6 +95,11 @@ public class Manager_User : MonoBehaviour
     {
         User user = new User(nickname, certificate);
         StartCoroutine(UpdateCertificatesCoroutine(user));
+    }
+
+    public void GetCertificatesByNickname(string nickname)
+    {
+        StartCoroutine(GetCertificatesByNicknameCoroutine(nickname));
     }
 
     #endregion
@@ -338,6 +282,39 @@ public class Manager_User : MonoBehaviour
             else
             {
                 ConnectionHelper.HandleRequestError(request, $"Updating certificate for user: {user.nickname}", enableDebugLogs, OnError);
+            }
+        }
+    }
+
+    private IEnumerator GetCertificatesByNicknameCoroutine(string nickname)
+    {
+        using (UnityWebRequest request = UnityWebRequest.Get($"{baseUrl}/get-certificates/{nickname}"))
+        {
+            yield return request.SendWebRequest();
+
+            if (request.result == UnityWebRequest.Result.Success)
+            {
+                try
+                {
+                    string jsonResponse = request.downloadHandler.text;
+                    CertificatesAsObjects certificates = JsonUtility.FromJson<CertificatesAsObjects>(jsonResponse);
+
+                    if (enableDebugLogs)
+                        Debug.Log($"Certificates loaded for user {nickname}: {jsonResponse}");
+
+                    OnCertificatesLoaded?.Invoke(certificates);
+                }
+                catch (Exception e)
+                {
+                    string error = $"Error parsing certificates: {e.Message}";
+                    if (enableDebugLogs)
+                        Debug.Log(error);
+                    OnError?.Invoke(error);
+                }
+            }
+            else
+            {
+                ConnectionHelper.HandleRequestError(request, $"Retrieving certificates for user: {nickname}", enableDebugLogs, OnError);
             }
         }
     }
