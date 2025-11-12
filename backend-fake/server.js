@@ -33,54 +33,6 @@ app.get('/api/quiz_items/:category_id', async (req, res) => {
     }
 });
 
-app.get('/api/users/certificates/:nickname', async (req, res) => {
-    try {
-        const [rows] = await db.query('SELECT certificates FROM users WHERE nickname = ?', [req.params.nickname]);
-
-        if (rows.length === 0)
-            return res.status(404).json({ error: "User not found" });
-
-        res.json(rows[0].certificates);
-    } catch (error) {
-        console.error('Error fetching certificates:', error);
-        res.status(500).json({ error: 'Error fetching certificates' });
-    }
-});
-
-app.get('/api/users/:nickname', async (req, res) => {
-    try {
-        const nickname = req.params.nickname;
-
-        if (!nickname) {
-            return res.status(400).json({ error: 'Nickname is required' });
-        }
-
-        const [rows] = await db.query(
-            'SELECT id, nickname, email, certificates FROM users WHERE nickname = ?',
-            [nickname]
-        );
-
-        if (rows.length === 0) {
-            return res.status(404).json({ error: 'User not found' });
-        }
-
-        // Parse certificates se è una stringa JSON
-        const user = rows[0];
-        if (typeof user.certificates === 'string') {
-            try {
-                user.certificates = JSON.parse(user.certificates);
-            } catch (e) {
-                user.certificates = { sql: false, surf: false, videogames: false };
-            }
-        }
-
-        res.json(user);
-    } catch (error) {
-        console.error('Error fetching user:', error);
-        res.status(500).json({ error: 'Error fetching user' });
-    }
-});
-
 // User endpoints
 app.post('/api/users/login', async (req, res) => {      //choosen POST instead of GET to not show the password in the url
     try {
@@ -214,6 +166,38 @@ app.patch('/api/users/update-certificate', async (req, res) => {
     } catch (error) {
         console.error('Error updating certificates', error);
         res.status(500).json({ errror: 'Error updating certificates', details: error.message });
+    }
+});
+
+app.get('/api/users/get-certificates/:nickname', async (req, res) => {
+    try {
+        const [rows] = await db.query(
+            'SELECT * FROM users WHERE nickname = ?',
+            [req.params.nickname]);
+
+        if (rows.length === 0) {
+            return res.status(404).json({ error: 'User not found' });
+        }
+
+        let certificatesAsObj;
+
+        if (typeof rows[0].certificates === 'string') {
+            try {
+                certificatesAsObj = JSON.parse(rows[0].certificates);
+            } catch (parseError) {
+                console.error('Error parsing certificates JSON:', parseError);
+                certificatesAsObj = { sql: false, surf: false, videogames: false };
+            }
+        } else if (rows[0].certificates === null || rows[0].certificates === undefined) {
+            certificatesAsObj = { sql: false, surf: false, videogames: false };
+        } else {
+            certificatesAsObj = rows[0].certificates;
+        }
+
+        res.json(certificatesAsObj);
+    } catch (error) {
+        console.error('Error fetching certificates:', error);
+        res.status(500).json({ error: 'Error fetching certificates' });
     }
 });
 

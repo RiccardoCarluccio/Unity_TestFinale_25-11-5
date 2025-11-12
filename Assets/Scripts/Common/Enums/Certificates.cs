@@ -1,6 +1,9 @@
+using System;
+
+[Flags]
 public enum Certificates
 {
-    Sql,
-    Surf,
-    Videogames
+    Sql = 1,
+    Surf = 2,
+    Videogames = 4
 }
