@@ -54,7 +54,7 @@ public class Manager_User : MonoBehaviour
     public UnityAction<User> OnUserDeleted;
     public UnityAction<User> OnUserUpdated;
     public UnityAction<User> OnCertificateUpdated;
-    public UnityAction<Certificates> OnCertificatesLoaded;
+    public UnityAction<CertificatesAsObjects> OnCertificatesLoaded;
     public UnityAction<string> OnError;
 
     [Header("Debug")]
@@ -297,7 +297,7 @@ public class Manager_User : MonoBehaviour
                 try
                 {
                     string jsonResponse = request.downloadHandler.text;
-                    Certificates certificates = JsonUtility.FromJson<Certificates>(jsonResponse);
+                    CertificatesAsObjects certificates = JsonUtility.FromJson<CertificatesAsObjects>(jsonResponse);
 
                     if (enableDebugLogs)
                         Debug.Log($"Certificates loaded for user {nickname}: {jsonResponse}");

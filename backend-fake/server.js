@@ -171,7 +171,7 @@ app.patch('/api/users/update-certificate', async (req, res) => {
 
 app.get('/api/users/get-certificates/:nickname', async (req, res) => {
     try {
-        const [certificates] = await db.query(
+        const [rows] = await db.query(
             'SELECT * FROM users WHERE nickname = ?',
             [req.params.nickname]);
 
@@ -179,9 +179,22 @@ app.get('/api/users/get-certificates/:nickname', async (req, res) => {
             return res.status(404).json({ error: 'User not found' });
         }
 
-        const certificates = Json.parse(rows[0].certificates);
+        let certificatesAsObj;
 
-        res.json(certificates);
+        if (typeof rows[0].certificates === 'string') {
+            try {
+                certificatesAsObj = JSON.parse(rows[0].certificates);
+            } catch (parseError) {
+                console.error('Error parsing certificates JSON:', parseError);
+                certificatesAsObj = { sql: false, surf: false, videogames: false };
+            }
+        } else if (rows[0].certificates === null || rows[0].certificates === undefined) {
+            certificatesAsObj = { sql: false, surf: false, videogames: false };
+        } else {
+            certificatesAsObj = rows[0].certificates;
+        }
+
+        res.json(certificatesAsObj);
     } catch (error) {
         console.error('Error fetching certificates:', error);
         res.status(500).json({ error: 'Error fetching certificates' });
