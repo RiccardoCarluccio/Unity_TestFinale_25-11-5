@@ -37,9 +37,9 @@ public class UserDashboard : MonoBehaviour
         _userManager.GetCertificatesByNickname(LoggedUser.Instance.User.nickname);      //add condition to check if the user is logged?
     }
 
-    private void CloseDashboard()       //possibly not working because it will be assigned before the button being enabled. In that case, move the method in a button script
+    private void CloseDashboard()
     {
-        _trophyPanel?.SetActive(false);
+        _trophyPanel.SetActive(false);
     }
 
     private void HandleCertificatesLoaded(CertificatesAsObjects certificates)
