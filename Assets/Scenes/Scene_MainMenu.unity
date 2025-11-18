@@ -2898,6 +2898,7 @@ GameObject:
   - component: {fileID: 1063940933}
   - component: {fileID: 1063940937}
   - component: {fileID: 1063940936}
+  - component: {fileID: 1063940938}
   m_Layer: 5
   m_Name: ButtonDisconect
   m_TagString: Untagged
@@ -3038,6 +3039,19 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: f8f05d64c3635d646825a4efa1575ea6, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::ButtonSound
+--- !u!114 &1063940938
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1063940931}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: d512a244a3fbbbc4cad11a2b05c6f6d6, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::ToLogin
+  _toLoginButton: {fileID: 1063940933}
 --- !u!1 &1199675911
 GameObject:
   m_ObjectHideFlags: 0
